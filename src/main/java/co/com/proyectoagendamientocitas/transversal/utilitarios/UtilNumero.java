@@ -1,10 +1,12 @@
 package co.com.proyectoagendamientocitas.transversal.utilitarios;
 
-public class UtilNumero {
+public final class UtilNumero {
 	
 	public static int CERO = 0;
 	
-	private UtilNumero() {}
+	private UtilNumero() {
+		
+	}
 	
 	public static <N extends Number> N obtenerValorDefecto(N valor, N valorDefecto){
 		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(valor, valorDefecto);

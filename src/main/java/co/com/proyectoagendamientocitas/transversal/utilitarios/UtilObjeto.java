@@ -1,8 +1,10 @@
 package co.com.proyectoagendamientocitas.transversal.utilitarios;
 
-public class UtilObjeto {
+public final class UtilObjeto {
 	
-	private UtilObjeto() {}
+	private UtilObjeto() {
+		
+	}
 	
 	public static <O> boolean esNulo(O objeto) {
 		return objeto == null;
