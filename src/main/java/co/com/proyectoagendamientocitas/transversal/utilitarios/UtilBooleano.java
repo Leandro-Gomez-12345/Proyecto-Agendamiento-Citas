@@ -14,7 +14,7 @@ public final class UtilBooleano {
 	}
  
 	public static boolean esVerdadero(final Boolean valor) {
-		return obtenerValorDefecto(valor, SI) == true;
+		return obtenerValorDefecto(valor, SI);
 	}
  
 	public static boolean esFalso(final Boolean valor) {
