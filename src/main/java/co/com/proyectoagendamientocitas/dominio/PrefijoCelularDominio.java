@@ -2,6 +2,7 @@ package co.com.proyectoagendamientocitas.dominio;
 
 import java.util.UUID;
 
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
@@ -15,6 +16,10 @@ public class PrefijoCelularDominio {
 	private PrefijoCelularDominio(Builder builder) {
 		this.id = builder.id;
 		this.prefijo = builder.prefijo;
+	}
+
+	public static PrefijoCelularDominio obtenerValorDefecto(PrefijoCelularDominio prefijoCelular) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(prefijoCelular, new Builder().build());
 	}
 
 	public UUID getId() {

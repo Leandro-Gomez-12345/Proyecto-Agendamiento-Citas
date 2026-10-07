@@ -2,7 +2,7 @@ package co.com.proyectoagendamientocitas.transversal.utilitarios;
 
 public final class UtilNumero {
 	
-	public static int CERO = 0;
+	public static final int CERO = 0;
 	
 	private UtilNumero() {
 		

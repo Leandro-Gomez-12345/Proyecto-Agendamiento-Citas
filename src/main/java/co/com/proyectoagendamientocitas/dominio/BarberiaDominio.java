@@ -2,6 +2,7 @@ package co.com.proyectoagendamientocitas.dominio;
 
 import java.util.UUID;
 
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
@@ -17,6 +18,10 @@ public class BarberiaDominio {
 		this.nombreBarberia = builder.nombreBarberia;
 		this.razonSocial = builder.razonSocial;
 		this.nit = builder.nit;
+	}
+
+	public static BarberiaDominio obtenerValorDefecto(BarberiaDominio barberia) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(barberia, new Builder().build());
 	}
 
 	public UUID getId() {

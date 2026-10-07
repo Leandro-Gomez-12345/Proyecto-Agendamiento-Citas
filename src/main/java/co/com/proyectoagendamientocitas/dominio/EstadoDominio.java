@@ -2,6 +2,7 @@ package co.com.proyectoagendamientocitas.dominio;
 
 import java.util.UUID;
 
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
@@ -15,6 +16,10 @@ public class EstadoDominio {
 		this.id = builder.id;
 		this.nombre = builder.nombre;
 		this.descripcion = builder.descripcion;
+	}
+
+	public static EstadoDominio obtenerValorDefecto(EstadoDominio estado) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(estado, new Builder().build());
 	}
 
 	public UUID getId() {

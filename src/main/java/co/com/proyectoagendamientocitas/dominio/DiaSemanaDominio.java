@@ -2,6 +2,7 @@ package co.com.proyectoagendamientocitas.dominio;
 
 import java.util.UUID;
 
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
@@ -13,6 +14,10 @@ public class DiaSemanaDominio {
 	private DiaSemanaDominio(Builder builder) {
 		this.id = builder.id;
 		this.nombre = builder.nombre;
+	}
+
+	public static DiaSemanaDominio obtenerValorDefecto(DiaSemanaDominio diaSemana) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(diaSemana, new Builder().build());
 	}
 
 	public UUID getId() {
