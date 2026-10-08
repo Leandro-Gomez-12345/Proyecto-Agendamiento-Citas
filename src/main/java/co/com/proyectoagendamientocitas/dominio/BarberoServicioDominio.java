@@ -9,13 +9,13 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class BarberoServicioDominio {
 
-	private final UUID id;
-	private final BarberoDominio barbero;
-	private final ServicioDominio servicio;
-	private final int duracionEnHoras;
-	private final int duracionEnMinutos;
-	private final int tiempoExtra;
-	private final boolean vigente;
+	private UUID id;
+	private BarberoDominio barbero;
+	private ServicioDominio servicio;
+	private int duracionEnHoras;
+	private int duracionEnMinutos;
+	private int tiempoExtra;
+	private boolean vigente;
 
 	private BarberoServicioDominio(Builder builder) {
 		this.id = builder.id;

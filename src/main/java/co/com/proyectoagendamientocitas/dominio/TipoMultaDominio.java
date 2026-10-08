@@ -8,9 +8,9 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class TipoMultaDominio {
 
-	private final UUID id;
-	private final String nombre;
-	private final String descripcion;
+	private UUID id;
+	private String nombre;
+	private String descripcion;
 
 	private TipoMultaDominio(Builder builder) {
 		this.id = builder.id;

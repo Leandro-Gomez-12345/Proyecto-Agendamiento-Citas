@@ -12,14 +12,14 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class HorarioBarberoDominio {
 
-	private final UUID id;
-	private final BarberoDominio barbero;
-	private final HorarioSedeDominio horarioDeLaSede;
-	private final LocalTime horaInicio;
-	private final LocalTime horaFinal;
-	private final LocalDate fechaCreacion;
-	private final LocalDate fechaDesactivacion;
-	private final boolean vigente;
+	private UUID id;
+	private BarberoDominio barbero;
+	private HorarioSedeDominio horarioDeLaSede;
+	private LocalTime horaInicio;
+	private LocalTime horaFinal;
+	private LocalDate fechaCreacion;
+	private LocalDate fechaDesactivacion;
+	private boolean vigente;
 
 	private HorarioBarberoDominio(Builder builder) {
 		this.id = builder.id;

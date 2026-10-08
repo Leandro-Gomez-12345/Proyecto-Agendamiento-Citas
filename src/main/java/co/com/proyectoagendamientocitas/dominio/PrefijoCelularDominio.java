@@ -10,8 +10,8 @@ public class PrefijoCelularDominio {
 
 	private static final String PREFIJO_DEFECTO = "+0";
 
-	private final UUID id;
-	private final String prefijo;
+	private UUID id;
+	private String prefijo;
 
 	private PrefijoCelularDominio(Builder builder) {
 		this.id = builder.id;

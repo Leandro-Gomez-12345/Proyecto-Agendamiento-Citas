@@ -11,16 +11,16 @@ public class BarberoDominio {
 
 	private static final String CELULAR_DEFECTO = "0";
 
-	private final UUID id;
-	private final String primerNombre;
-	private final String segundoNombre;
-	private final String primerApellido;
-	private final String segundoApellido;
-	private final PrefijoCelularDominio prefijo;
-	private final String celular;
-	private final boolean elNumeroCelularEsCorrecto;
-	private final boolean vigente;
-	private final SedeDominio sedeDeTrabajo;
+	private UUID id;
+	private String primerNombre;
+	private String segundoNombre;
+	private String primerApellido;
+	private String segundoApellido;
+	private PrefijoCelularDominio prefijo;
+	private String celular;
+	private boolean elNumeroCelularEsCorrecto;
+	private boolean vigente;
+	private SedeDominio sedeDeTrabajo;
 
 	private BarberoDominio(Builder builder) {
 		this.id = builder.id;

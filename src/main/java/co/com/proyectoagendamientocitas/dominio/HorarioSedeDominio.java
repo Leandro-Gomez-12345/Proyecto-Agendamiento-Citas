@@ -12,14 +12,14 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class HorarioSedeDominio {
 
-	private final UUID id;
-	private final SedeDominio sede;
-	private final DiaSemanaDominio diaDeLaSemana;
-	private final LocalTime horaApertura;
-	private final LocalTime horaCierre;
-	private final LocalDate fechaCreacion;
-	private final LocalDate fechaDesactivacion;
-	private final boolean vigente;
+	private UUID id;
+	private SedeDominio sede;
+	private DiaSemanaDominio diaDeLaSemana;
+	private LocalTime horaApertura;
+	private LocalTime horaCierre;
+	private LocalDate fechaCreacion;
+	private LocalDate fechaDesactivacion;
+	private boolean vigente;
 
 	private HorarioSedeDominio(Builder builder) {
 		this.id = builder.id;

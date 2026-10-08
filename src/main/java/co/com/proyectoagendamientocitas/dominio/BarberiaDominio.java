@@ -8,10 +8,10 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class BarberiaDominio {
 
-	private final UUID id;
-	private final String nombreBarberia;
-	private final String razonSocial;
-	private final String nit;
+	private UUID id;
+	private String nombreBarberia;
+	private String razonSocial;
+	private String nit;
 
 	private BarberiaDominio(Builder builder) {
 		this.id = builder.id;

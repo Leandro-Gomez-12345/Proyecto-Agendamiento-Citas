@@ -8,10 +8,10 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class BloqueoDominio {
 
-	private final UUID id;
-	private final BarberoDominio barbero;
-	private final LocalDateTime fechaHoraInicio;
-	private final LocalDateTime fechaHoraFinal;
+	private UUID id;
+	private BarberoDominio barbero;
+	private LocalDateTime fechaHoraInicio;
+	private LocalDateTime fechaHoraFinal;
 
 	private BloqueoDominio(Builder builder) {
 		this.id = builder.id;

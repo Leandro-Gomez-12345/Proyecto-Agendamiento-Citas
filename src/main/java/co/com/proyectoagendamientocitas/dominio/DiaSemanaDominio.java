@@ -8,8 +8,8 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class DiaSemanaDominio {
 
-	private final UUID id;
-	private final String nombre;
+	private UUID id;
+	private String nombre;
 
 	private DiaSemanaDominio(Builder builder) {
 		this.id = builder.id;

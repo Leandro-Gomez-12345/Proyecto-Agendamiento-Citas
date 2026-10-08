@@ -8,9 +8,9 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class CiudadDominio {
 
-	private final UUID id;
-	private final String nombre;
-	private final DepartamentoDominio departamento;
+	private UUID id;
+	private String nombre;
+	private DepartamentoDominio departamento;
 
 	private CiudadDominio(Builder builder) {
 		this.id = builder.id;

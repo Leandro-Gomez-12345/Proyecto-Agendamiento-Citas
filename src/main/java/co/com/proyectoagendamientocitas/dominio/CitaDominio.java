@@ -10,16 +10,16 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class CitaDominio {
 
-	private final UUID id;
-	private final ClienteDominio cliente;
-	private final AgendaDominio agenda;
-	private final EstadoDominio estado;
-	private final LocalTime horaInicio;
-	private final LocalTime horaFinEstimada;
-	private final int porcentajeDescuento;
-	private final int multa;
-	private final int tiempoEspera;
-	private final int precioTotal;
+	private UUID id;
+	private ClienteDominio cliente;
+	private AgendaDominio agenda;
+	private EstadoDominio estado;
+	private LocalTime horaInicio;
+	private LocalTime horaFinEstimada;
+	private int porcentajeDescuento;
+	private int multa;
+	private int tiempoEspera;
+	private int precioTotal;
 
 	private CitaDominio(Builder builder) {
 		this.id = builder.id;

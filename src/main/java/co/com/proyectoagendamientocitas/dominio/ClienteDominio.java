@@ -11,15 +11,15 @@ public class ClienteDominio {
 
 	private static final String CELULAR_DEFECTO = "0";
 
-	private final UUID id;
-	private final String primerNombre;
-	private final String segundoNombre;
-	private final String primerApellido;
-	private final String segundoApellido;
-	private final PrefijoCelularDominio prefijoCelular;
-	private final String celular;
-	private final boolean elNumeroCelularEsCorrecto;
-	private final boolean estaVetado;
+	private UUID id;
+	private String primerNombre;
+	private String segundoNombre;
+	private String primerApellido;
+	private String segundoApellido;
+	private PrefijoCelularDominio prefijoCelular;
+	private String celular;
+	private boolean elNumeroCelularEsCorrecto;
+	private boolean estaVetado;
 
 	private ClienteDominio(Builder builder) {
 		this.id = builder.id;

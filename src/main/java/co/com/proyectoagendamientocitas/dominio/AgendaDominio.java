@@ -9,9 +9,9 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class AgendaDominio {
 
-	private final UUID id;
-	private final HorarioBarberoDominio horarioDelBarbero;
-	private final LocalDate fecha;
+	private UUID id;
+	private HorarioBarberoDominio horarioDelBarbero;
+	private LocalDate fecha;
 
 	private AgendaDominio(Builder builder) {
 		this.id = builder.id;
