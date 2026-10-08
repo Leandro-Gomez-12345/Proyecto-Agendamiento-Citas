@@ -56,4 +56,5 @@ public final class UtilTexto {
 	public static boolean cumpleFormato(String valor, Pattern formato) {
 		return formato.matcher(quitarEspaciosEnBlanco(valor)).matches();
 	}
+	
 }
