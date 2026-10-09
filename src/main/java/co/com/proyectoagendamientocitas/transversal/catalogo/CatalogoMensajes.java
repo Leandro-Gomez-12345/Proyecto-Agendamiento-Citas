@@ -46,4 +46,14 @@ public final class CatalogoMensajes {
 		public static final String USUARIO_ERROR_CERRANDO_CONEXION_SQL = "Se presentó un problema tratando de cerrar la conexión con la fuente de información."
 				+ CONTACTAR_ADMINISTRADOR;
 	}
+
+	public static final class Datos {
+
+		private Datos() {
+
+		}
+
+		public static final String USUARIO_ERROR_ABRIENDO_CONEXION = "Se presentó un problema tratando de abrir la conexión con la fuente de información."
+				+ CONTACTAR_ADMINISTRADOR;
+	}
 }
