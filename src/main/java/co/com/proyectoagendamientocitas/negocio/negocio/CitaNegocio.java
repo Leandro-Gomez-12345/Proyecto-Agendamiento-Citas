@@ -3,6 +3,7 @@ package co.com.proyectoagendamientocitas.negocio.negocio;
 import java.util.List;
 import java.util.UUID;
 
+import co.com.proyectoagendamientocitas.dominio.BarberiaDominio;
 import co.com.proyectoagendamientocitas.dominio.BarberoServicioDominio;
 import co.com.proyectoagendamientocitas.dominio.CitaDominio;
 
@@ -24,5 +25,5 @@ public interface CitaNegocio {
 
 	CitaDominio registrarNoPagoCita(UUID id);
 
-	CitaDominio registrarTardanzaCliente(UUID id);
+	List<CitaDominio> cancelarCitasPorVeto(CitaDominio filtro, BarberiaDominio barberia);
 }

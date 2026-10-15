@@ -3,6 +3,7 @@ package co.com.proyectoagendamientocitas.negocio.fachada;
 import java.util.List;
 import java.util.UUID;
 
+import co.com.proyectoagendamientocitas.dto.BarberiaDTO;
 import co.com.proyectoagendamientocitas.dto.BarberoServicioDTO;
 import co.com.proyectoagendamientocitas.dto.CitaDTO;
 
@@ -24,5 +25,5 @@ public interface CitaFachada {
 
 	CitaDTO registrarNoPagoCita(UUID id);
 
-	CitaDTO registrarTardanzaCliente(UUID id);
+	List<CitaDTO> cancelarCitasPorVeto(CitaDTO filtro, BarberiaDTO barberia);
 }
