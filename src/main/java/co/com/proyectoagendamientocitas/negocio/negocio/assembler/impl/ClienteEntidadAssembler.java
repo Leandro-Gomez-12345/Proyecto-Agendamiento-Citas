@@ -29,7 +29,6 @@ public final class ClienteEntidadAssembler implements EntidadAssembler<ClienteDo
 		entidad.setPrefijoCelular(PrefijoCelularEntidadAssembler.getInstance().convertirAEntidad(dominioTmp.getPrefijoCelular()));
 		entidad.setCelular(dominioTmp.getCelular());
 		entidad.setElNumeroCelularEsCorrecto(dominioTmp.isElNumeroCelularEsCorrecto());
-		entidad.setEstaVetado(dominioTmp.isEstaVetado());
 		return entidad;
 	}
 
@@ -45,7 +44,6 @@ public final class ClienteEntidadAssembler implements EntidadAssembler<ClienteDo
 				.prefijoCelular(PrefijoCelularEntidadAssembler.getInstance().convertirADominio(entidadTmp.getPrefijoCelular()))
 				.celular(entidadTmp.getCelular())
 				.elNumeroCelularEsCorrecto(entidadTmp.isElNumeroCelularEsCorrecto())
-				.estaVetado(entidadTmp.isEstaVetado())
 				.build();
 	}
 }

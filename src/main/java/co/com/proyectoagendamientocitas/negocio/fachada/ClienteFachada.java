@@ -11,12 +11,4 @@ public interface ClienteFachada {
 	ClienteDTO editarContactoCliente(UUID id, ClienteDTO datos);
 
 	ClienteDTO consultarDatosCliente(UUID id);
-
-	boolean consultarEstadoVetoCliente(UUID id);
-
-	int consultarCantidadMultasSinPagar(UUID id);
-
-	void vetarCliente(UUID id);
-
-	void quitarVetoCliente(UUID id);
 }

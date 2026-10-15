@@ -25,6 +25,7 @@ public final class PeriodoCierreDTOAssembler implements DTOAssembler<PeriodoCier
 		dto.setSede(SedeDTOAssembler.getInstance().convertirADTO(dominioTmp.getSede()));
 		dto.setFechaHoraInicio(dominioTmp.getFechaHoraInicio());
 		dto.setFechaHoraFinal(dominioTmp.getFechaHoraFinal());
+		dto.setMotivo(dominioTmp.getMotivo());
 		return dto;
 	}
 
@@ -36,6 +37,7 @@ public final class PeriodoCierreDTOAssembler implements DTOAssembler<PeriodoCier
 				.sede(SedeDTOAssembler.getInstance().convertirADominio(dtoTmp.getSede()))
 				.fechaHoraInicio(dtoTmp.getFechaHoraInicio())
 				.fechaHoraFinal(dtoTmp.getFechaHoraFinal())
+				.motivo(dtoTmp.getMotivo())
 				.build();
 	}
 }

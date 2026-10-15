@@ -25,6 +25,7 @@ public final class PeriodoCierreEntidadAssembler implements EntidadAssembler<Per
 		entidad.setSede(SedeEntidadAssembler.getInstance().convertirAEntidad(dominioTmp.getSede()));
 		entidad.setFechaHoraInicio(dominioTmp.getFechaHoraInicio());
 		entidad.setFechaHoraFinal(dominioTmp.getFechaHoraFinal());
+		entidad.setMotivo(dominioTmp.getMotivo());
 		return entidad;
 	}
 
@@ -36,6 +37,7 @@ public final class PeriodoCierreEntidadAssembler implements EntidadAssembler<Per
 				.sede(SedeEntidadAssembler.getInstance().convertirADominio(entidadTmp.getSede()))
 				.fechaHoraInicio(entidadTmp.getFechaHoraInicio())
 				.fechaHoraFinal(entidadTmp.getFechaHoraFinal())
+				.motivo(entidadTmp.getMotivo())
 				.build();
 	}
 }

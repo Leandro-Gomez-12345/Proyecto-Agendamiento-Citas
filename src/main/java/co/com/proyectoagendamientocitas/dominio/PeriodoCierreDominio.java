@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilFechaHora;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class PeriodoCierreDominio {
@@ -13,12 +14,14 @@ public class PeriodoCierreDominio {
 	private SedeDominio sede;
 	private LocalDateTime fechaHoraInicio;
 	private LocalDateTime fechaHoraFinal;
+	private String motivo;
 
 	private PeriodoCierreDominio(Builder builder) {
 		this.id = builder.id;
 		this.sede = builder.sede;
 		this.fechaHoraInicio = builder.fechaHoraInicio;
 		this.fechaHoraFinal = builder.fechaHoraFinal;
+		this.motivo = builder.motivo;
 	}
 
 	public static PeriodoCierreDominio obtenerValorDefecto(PeriodoCierreDominio periodoCierre) {
@@ -41,18 +44,24 @@ public class PeriodoCierreDominio {
 		return fechaHoraFinal;
 	}
 
+	public String getMotivo() {
+		return motivo;
+	}
+
 	public static class Builder {
 
 		private UUID id;
 		private SedeDominio sede;
 		private LocalDateTime fechaHoraInicio;
 		private LocalDateTime fechaHoraFinal;
+		private String motivo;
 
 		public Builder() {
 			id = UtilUUID.obtenerUUIDDefecto();
 			sede = SedeDominio.obtenerValorDefecto(null);
 			fechaHoraInicio = UtilFechaHora.FECHA_HORA_DEFECTO;
 			fechaHoraFinal = UtilFechaHora.FECHA_HORA_DEFECTO;
+			motivo = UtilTexto.VACIA;
 		}
 
 		public Builder id(UUID id) {
@@ -72,6 +81,11 @@ public class PeriodoCierreDominio {
 
 		public Builder fechaHoraFinal(LocalDateTime fechaHoraFinal) {
 			this.fechaHoraFinal = UtilFechaHora.obtenerValorDefecto(fechaHoraFinal);
+			return this;
+		}
+
+		public Builder motivo(String motivo) {
+			this.motivo = UtilTexto.quitarEspaciosEnBlanco(motivo);
 			return this;
 		}
 

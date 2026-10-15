@@ -19,7 +19,6 @@ public final class ClienteEntidad {
 	private PrefijoCelularEntidad prefijoCelular;
 	private String celular;
 	private boolean elNumeroCelularEsCorrecto;
-	private boolean estaVetado;
 
 	public ClienteEntidad() {
 		setId(UtilUUID.obtenerUUIDDefecto());
@@ -30,7 +29,6 @@ public final class ClienteEntidad {
 		setPrefijoCelular(new PrefijoCelularEntidad());
 		setCelular(CELULAR_DEFECTO);
 		setElNumeroCelularEsCorrecto(UtilBooleano.NO);
-		setEstaVetado(UtilBooleano.NO);
 	}
 
 	public UUID getId() {
@@ -95,13 +93,5 @@ public final class ClienteEntidad {
 
 	public void setElNumeroCelularEsCorrecto(Boolean elNumeroCelularEsCorrecto) {
 		this.elNumeroCelularEsCorrecto = UtilBooleano.obtenerValorDefecto(elNumeroCelularEsCorrecto, UtilBooleano.NO);
-	}
-
-	public boolean isEstaVetado() {
-		return estaVetado;
-	}
-
-	public void setEstaVetado(Boolean estaVetado) {
-		this.estaVetado = UtilBooleano.obtenerValorDefecto(estaVetado, UtilBooleano.NO);
 	}
 }

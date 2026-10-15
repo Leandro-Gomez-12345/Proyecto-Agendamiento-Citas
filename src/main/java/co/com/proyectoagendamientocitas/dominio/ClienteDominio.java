@@ -19,7 +19,6 @@ public class ClienteDominio {
 	private PrefijoCelularDominio prefijoCelular;
 	private String celular;
 	private boolean elNumeroCelularEsCorrecto;
-	private boolean estaVetado;
 
 	private ClienteDominio(Builder builder) {
 		this.id = builder.id;
@@ -30,7 +29,6 @@ public class ClienteDominio {
 		this.prefijoCelular = builder.prefijoCelular;
 		this.celular = builder.celular;
 		this.elNumeroCelularEsCorrecto = builder.elNumeroCelularEsCorrecto;
-		this.estaVetado = builder.estaVetado;
 	}
 
 	public static ClienteDominio obtenerValorDefecto(ClienteDominio cliente) {
@@ -69,10 +67,6 @@ public class ClienteDominio {
 		return elNumeroCelularEsCorrecto;
 	}
 
-	public boolean isEstaVetado() {
-		return estaVetado;
-	}
-
 	public static class Builder {
 
 		private UUID id;
@@ -83,7 +77,6 @@ public class ClienteDominio {
 		private PrefijoCelularDominio prefijoCelular;
 		private String celular;
 		private boolean elNumeroCelularEsCorrecto;
-		private boolean estaVetado;
 
 		public Builder() {
 			id = UtilUUID.obtenerUUIDDefecto();
@@ -94,7 +87,6 @@ public class ClienteDominio {
 			prefijoCelular = PrefijoCelularDominio.obtenerValorDefecto(null);
 			celular = CELULAR_DEFECTO;
 			elNumeroCelularEsCorrecto = UtilBooleano.NO;
-			estaVetado = UtilBooleano.NO;
 		}
 
 		public Builder id(UUID id) {
@@ -134,11 +126,6 @@ public class ClienteDominio {
 
 		public Builder elNumeroCelularEsCorrecto(Boolean elNumeroCelularEsCorrecto) {
 			this.elNumeroCelularEsCorrecto = UtilBooleano.obtenerValorDefecto(elNumeroCelularEsCorrecto, UtilBooleano.NO);
-			return this;
-		}
-
-		public Builder estaVetado(Boolean estaVetado) {
-			this.estaVetado = UtilBooleano.obtenerValorDefecto(estaVetado, UtilBooleano.NO);
 			return this;
 		}
 

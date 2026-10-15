@@ -29,7 +29,6 @@ public final class ClienteDTOAssembler implements DTOAssembler<ClienteDominio, C
 		dto.setPrefijoCelular(PrefijoCelularDTOAssembler.getInstance().convertirADTO(dominioTmp.getPrefijoCelular()));
 		dto.setCelular(dominioTmp.getCelular());
 		dto.setElNumeroCelularEsCorrecto(dominioTmp.isElNumeroCelularEsCorrecto());
-		dto.setEstaVetado(dominioTmp.isEstaVetado());
 		return dto;
 	}
 
@@ -45,7 +44,6 @@ public final class ClienteDTOAssembler implements DTOAssembler<ClienteDominio, C
 				.prefijoCelular(PrefijoCelularDTOAssembler.getInstance().convertirADominio(dtoTmp.getPrefijoCelular()))
 				.celular(dtoTmp.getCelular())
 				.elNumeroCelularEsCorrecto(dtoTmp.isElNumeroCelularEsCorrecto())
-				.estaVetado(dtoTmp.isEstaVetado())
 				.build();
 	}
 }

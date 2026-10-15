@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilFechaHora;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public final class PeriodoCierreDTO {
@@ -13,12 +14,14 @@ public final class PeriodoCierreDTO {
 	private SedeDTO sede;
 	private LocalDateTime fechaHoraInicio;
 	private LocalDateTime fechaHoraFinal;
+	private String motivo;
 
 	public PeriodoCierreDTO() {
 		setId(UtilUUID.obtenerUUIDDefecto());
 		setSede(new SedeDTO());
 		setFechaHoraInicio(UtilFechaHora.FECHA_HORA_DEFECTO);
 		setFechaHoraFinal(UtilFechaHora.FECHA_HORA_DEFECTO);
+		setMotivo(UtilTexto.VACIA);
 	}
 
 	public UUID getId() {
@@ -51,5 +54,13 @@ public final class PeriodoCierreDTO {
 
 	public void setFechaHoraFinal(LocalDateTime fechaHoraFinal) {
 		this.fechaHoraFinal = UtilFechaHora.obtenerValorDefecto(fechaHoraFinal);
+	}
+
+	public String getMotivo() {
+		return motivo;
+	}
+
+	public void setMotivo(String motivo) {
+		this.motivo = UtilTexto.quitarEspaciosEnBlanco(motivo);
 	}
 }
