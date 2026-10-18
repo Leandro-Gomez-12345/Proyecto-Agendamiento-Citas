@@ -1,5 +1,6 @@
 package co.com.proyectoagendamientocitas.transversal.utilitarios;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public final class UtilUUID {
@@ -11,7 +12,7 @@ public final class UtilUUID {
 	}
 	
 	public static UUID generar() {
-	    return UUID.randomUUID();
+	    return UUID.ofEpochMillis(Instant.now().toEpochMilli());
     }
 	
 	public static UUID convertirAUUID(final String UUIDTexto) {
@@ -31,7 +32,7 @@ public final class UtilUUID {
 	}
 	 
 	 public static String obtenerValorDefectoComoTexto(final String valor) {
-		 return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(valor,UUID_DEFECTO_TEXTO);
+		 return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(valor, UUID_DEFECTO_TEXTO);
 	}
 	 
 }
