@@ -19,7 +19,7 @@ public abstract class AbstractRestController {
 	@ExceptionHandler(AgendamientoCitasExcepcion.class)
 	public ResponseEntity<RespuestaError<String>> controlarAgendamientoCitasException(AgendamientoCitasExcepcion excepcion) {
 		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta = "Se ha presentado tratando de llevar a cabo la operacion deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguele el codigo: "
+		var mensajeRespuesta = "Se ha presentado un error tratando de llevar a cabo la operacion deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguele el codigo: "
 				.concat(correlationId);
 		var respuesta = RespuestaError.crear(excepcion.getMensajeUsuario());
 		logger.printException(correlationId, excepcion);
