@@ -11,9 +11,11 @@ import co.com.proyectoagendamientocitas.negocio.negocio.impl.BarberiaNegocioImpl
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasExcepcion;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasFachadaExcepcion;
+import co.com.proyectoagendamientocitas.transversal.logger.Logger;
 
 public class BarberiaFachadaImpl implements BarberiaFachada {
-
+	
+	private static final Logger logger = Logger.obtener(BarberiaFachadaImpl.class);
 	private static final String OPERACION_NO_IMPLEMENTADA = "Operación pendiente de implementar";
 
 	private final Supplier<DAOFactory> proveedorFactoria;
@@ -42,6 +44,7 @@ public class BarberiaFachadaImpl implements BarberiaFachada {
 			var barberiaDominio = BarberiaDTOAssembler.getInstance().convertirADominio(datos);
 			var barberiaRegistrada = new BarberiaNegocioImpl(daoFactory).registrarBarberia(barberiaDominio);
 			daoFactory.confirmarTransaccion();
+			logger.info("Barbería registrada con id {}", barberiaRegistrada.getId());
 			return BarberiaDTOAssembler.getInstance().convertirADTO(barberiaRegistrada);
 		} catch (AgendamientoCitasExcepcion excepcion) {
 			daoFactory.cancelarTransaccion();
