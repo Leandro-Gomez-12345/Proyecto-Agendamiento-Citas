@@ -1,7 +1,6 @@
 package co.com.proyectoagendamientocitas.negocio.fachada.impl;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.dto.BarberiaDTO;
@@ -12,11 +11,11 @@ import co.com.proyectoagendamientocitas.negocio.negocio.impl.BarberiaNegocioImpl
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasExcepcion;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasFachadaExcepcion;
-import co.com.proyectoagendamientocitas.transversal.logger.Logger;
+import co.com.proyectoagendamientocitas.transversal.logger.AgendamientoCitasLogger;
 
 public class BarberiaFachadaImpl implements BarberiaFachada {
 	
-	private static final Logger logger = Logger.obtener(BarberiaFachadaImpl.class);
+	private static final AgendamientoCitasLogger logger = AgendamientoCitasLogger.obtener(BarberiaFachadaImpl.class);
 	private static final String OPERACION_NO_IMPLEMENTADA = "Operación pendiente de implementar";
 	
 	private DAOFactory daoFactory;
@@ -42,7 +41,7 @@ public class BarberiaFachadaImpl implements BarberiaFachada {
 			var barberiaDominio = BarberiaDTOAssembler.getInstance().convertirADominio(datos);
 			var barberiaRegistrada = barberiaNegocio.registrarBarberia(barberiaDominio);
 			daoFactory.confirmarTransaccion();
-			logger.info("Barbería registrada con id: ", barberiaRegistrada.getId());
+			logger.info("Barbería registrada con id {}", barberiaRegistrada.getId());
 			return BarberiaDTOAssembler.getInstance().convertirADTO(barberiaRegistrada);
 		} catch (AgendamientoCitasExcepcion excepcion) {
 			daoFactory.cancelarTransaccion();

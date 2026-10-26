@@ -8,13 +8,13 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import co.com.proyectoagendamientocitas.controlador.respuesta.RespuestaError;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasExcepcion;
-import co.com.proyectoagendamientocitas.transversal.logger.Logger;
+import co.com.proyectoagendamientocitas.transversal.logger.AgendamientoCitasLogger;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 @RestControllerAdvice
 public abstract class AbstractRestController {
 	
-	private static final Logger logger = Logger.obtener(AbstractRestController.class);
+	private static final AgendamientoCitasLogger logger = AgendamientoCitasLogger.obtener(AbstractRestController.class);
 	
 	@ExceptionHandler(AgendamientoCitasExcepcion.class)
 	public ResponseEntity<RespuestaError<String>> controlarAgendamientoCitasException(AgendamientoCitasExcepcion excepcion) {
@@ -22,7 +22,7 @@ public abstract class AbstractRestController {
 		var mensajeRespuesta = "Se ha presentado un error tratando de llevar a cabo la operacion deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguele el codigo: "
 				.concat(correlationId);
 		var respuesta = RespuestaError.crear(excepcion.getMensajeUsuario());
-		logger.printException(correlationId, excepcion);
+		logger.registrarExcepcion(correlationId, excepcion);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
 	}
 	
@@ -43,7 +43,7 @@ public abstract class AbstractRestController {
 		var mensajeRespuesta = "Se ha presentado tratando de llevar a cabo la operacion deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguelo "
 				.concat(correlationId);
 		var respuesta = RespuestaError.crear(mensajeRespuesta);
-		logger.printException(correlationId, excepcion);
+		logger.registrarExcepcion(correlationId, excepcion);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
 	}
 }
