@@ -7,6 +7,7 @@ import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.dto.BarberiaDTO;
 import co.com.proyectoagendamientocitas.negocio.fachada.BarberiaFachada;
 import co.com.proyectoagendamientocitas.negocio.fachada.assembler.impl.BarberiaDTOAssembler;
+import co.com.proyectoagendamientocitas.negocio.negocio.BarberiaNegocio;
 import co.com.proyectoagendamientocitas.negocio.negocio.impl.BarberiaNegocioImpl;
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasExcepcion;
@@ -17,20 +18,17 @@ public class BarberiaFachadaImpl implements BarberiaFachada {
 	
 	private static final Logger logger = Logger.obtener(BarberiaFachadaImpl.class);
 	private static final String OPERACION_NO_IMPLEMENTADA = "Operación pendiente de implementar";
-
-	private final Supplier<DAOFactory> proveedorFactoria;
+	
+	private DAOFactory daoFactory;
+	private BarberiaNegocio barberiaNegocio;
 
 	public BarberiaFachadaImpl() {
-		this(DAOFactory::obtenerFactoria);
-	}
-
-	public BarberiaFachadaImpl(Supplier<DAOFactory> proveedorFactoria) {
-		this.proveedorFactoria = proveedorFactoria;
+		daoFactory = DAOFactory.obtenerFactoria();
+		barberiaNegocio = new BarberiaNegocioImpl(daoFactory);
 	}
 
 	@Override
 	public BarberiaDTO registrarBarberia(final BarberiaDTO datos) {
-		var daoFactory = proveedorFactoria.get();
 		try {
 			daoFactory.iniciarTransaccion();
 			return registrarConfirmandoTransaccion(daoFactory, datos);
@@ -42,9 +40,9 @@ public class BarberiaFachadaImpl implements BarberiaFachada {
 	private BarberiaDTO registrarConfirmandoTransaccion(final DAOFactory daoFactory, final BarberiaDTO datos) {
 		try {
 			var barberiaDominio = BarberiaDTOAssembler.getInstance().convertirADominio(datos);
-			var barberiaRegistrada = new BarberiaNegocioImpl(daoFactory).registrarBarberia(barberiaDominio);
+			var barberiaRegistrada = barberiaNegocio.registrarBarberia(barberiaDominio);
 			daoFactory.confirmarTransaccion();
-			logger.info("Barbería registrada con id {}", barberiaRegistrada.getId());
+			logger.info("Barbería registrada con id: ", barberiaRegistrada.getId());
 			return BarberiaDTOAssembler.getInstance().convertirADTO(barberiaRegistrada);
 		} catch (AgendamientoCitasExcepcion excepcion) {
 			daoFactory.cancelarTransaccion();
