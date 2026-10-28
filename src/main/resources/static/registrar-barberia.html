@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Registrar barbería</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="bg-body-tertiary">
+	<main class="container py-5">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-8 col-lg-6">
+				<div class="card shadow-sm">
+					<div class="card-body p-4">
+						<h1 class="h4 mb-4">Registrar barbería</h1>
+
+						<div id="areaMensaje" class="alert d-none" role="alert"></div>
+
+						<form id="formularioBarberia" novalidate>
+							<div class="mb-3">
+								<label for="nombreBarberia" class="form-label">Nombre de la barbería</label>
+								<input type="text" id="nombreBarberia" class="form-control" maxlength="50" autocomplete="off">
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Entre 2 y 50 caracteres. Es el nombre que verán los clientes.</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="razonSocial" class="form-label">Razón social</label>
+								<input type="text" id="razonSocial" class="form-control" maxlength="50" autocomplete="off">
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Entre 10 y 50 caracteres. Es el nombre legal registrado en la cámara de comercio.</div>
+							</div>
+
+							<div class="mb-4">
+								<label for="nit" class="form-label">NIT</label>
+								<input type="text" id="nit" class="form-control" maxlength="12" placeholder="Ejemplo: 900123456-7" autocomplete="off">
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Entre 8 y 10 dígitos, un guion (-) y 1 dígito.</div>
+							</div>
+
+							<button type="submit" id="botonRegistrar" class="btn btn-primary">
+								<span id="indicadorCarga" class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+								Registrar barbería
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script>
+		// ---------- Llamada al backend ----------
+
+		const URL_BARBERIAS = "/api/v1/barberias";
+
+		const MENSAJE_SIN_CONEXION = "No fue posible comunicarse con el servidor. Verifique que la aplicación esté en ejecución e intente de nuevo.";
+		const MENSAJE_ERROR_GENERICO = "Se presentó un problema tratando de registrar la barbería. Intente de nuevo.";
+		const MENSAJE_REGISTRO_EXITOSO = "La barbería se registró correctamente.";
+
+		/**
+		 * Envía los datos de la nueva barbería al backend (POST /api/v1/barberias).
+		 *
+		 * @param {{nombreBarberia: string, razonSocial: string, nit: string}} datos
+		 * @returns {Promise<string>} el mensaje de confirmación que devuelve el backend.
+		 * @throws {Error} con un mensaje listo para mostrarle al usuario si el backend rechaza
+		 *                 la operación o no se logra la comunicación.
+		 */
+		async function registrarBarberia(datos) {
+			let respuesta;
+			try {
+				respuesta = await fetch(URL_BARBERIAS, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(datos),
+				});
+			} catch {
+				throw new Error(MENSAJE_SIN_CONEXION);
+			}
+
+			const cuerpo = await leerCuerpoJson(respuesta);
+
+			if (!respuesta.ok) {
+				throw new Error(cuerpo?.mensajes?.[0] ?? MENSAJE_ERROR_GENERICO);
+			}
+			return cuerpo?.datos?.[0] ?? MENSAJE_REGISTRO_EXITOSO;
+		}
+
+		async function leerCuerpoJson(respuesta) {
+			try {
+				return await respuesta.json();
+			} catch {
+				return null;
+			}
+		}
+
+		// ---------- Validaciones del formulario ----------
+
+		const FORMATO_NIT = /^[0-9]{8,10}-[0-9]$/;
+
+		function validarNombreBarberia(valor) {
+			const nombre = valor.trim();
+			if (nombre === "") {
+				return "El nombre de la barbería es obligatorio.";
+			}
+			if (nombre.length < 2 || nombre.length > 50) {
+				return "El nombre de la barbería debe tener entre 2 y 50 caracteres.";
+			}
+			return "";
+		}
+
+		function validarRazonSocial(valor) {
+			if (valor.trim() === "") {
+				return "La razón social es obligatoria.";
+			}
+			if (valor.length < 10 || valor.length > 50) {
+				return "La razón social debe tener entre 10 y 50 caracteres.";
+			}
+			return "";
+		}
+
+		function validarNit(valor) {
+			const nit = valor.trim();
+			if (nit === "") {
+				return "El NIT es obligatorio.";
+			}
+			if (!FORMATO_NIT.test(nit)) {
+				return "El NIT debe tener entre 8 y 10 dígitos, un guion (-) y 1 dígito. Ejemplo: 900123456-7.";
+			}
+			return "";
+		}
+
+		// ---------- Pantalla ----------
+
+		const formulario = document.getElementById("formularioBarberia");
+		const campoNombreBarberia = document.getElementById("nombreBarberia");
+		const campoRazonSocial = document.getElementById("razonSocial");
+		const campoNit = document.getElementById("nit");
+		const botonRegistrar = document.getElementById("botonRegistrar");
+		const indicadorCarga = document.getElementById("indicadorCarga");
+		const areaMensaje = document.getElementById("areaMensaje");
+
+		function marcarCampo(campo, mensajeError) {
+			const esValido = mensajeError === "";
+			campo.classList.toggle("is-invalid", !esValido);
+			campo.parentElement.querySelector(".invalid-feedback").textContent = mensajeError;
+			return esValido;
+		}
+
+		function validarFormulario() {
+			const nombreEsValido = marcarCampo(campoNombreBarberia, validarNombreBarberia(campoNombreBarberia.value));
+			const razonSocialEsValida = marcarCampo(campoRazonSocial, validarRazonSocial(campoRazonSocial.value));
+			const nitEsValido = marcarCampo(campoNit, validarNit(campoNit.value));
+			return nombreEsValido && razonSocialEsValida && nitEsValido;
+		}
+
+		function obtenerDatosFormulario() {
+			return {
+				nombreBarberia: campoNombreBarberia.value.trim(),
+				razonSocial: campoRazonSocial.value,
+				nit: campoNit.value.trim(),
+			};
+		}
+
+		function mostrarMensaje(texto, tipo) {
+			areaMensaje.textContent = texto;
+			areaMensaje.className = `alert alert-${tipo}`;
+		}
+
+		function ocultarMensaje() {
+			areaMensaje.textContent = "";
+			areaMensaje.className = "alert d-none";
+		}
+
+		function indicarEnvioEnCurso(enCurso) {
+			botonRegistrar.disabled = enCurso;
+			indicadorCarga.classList.toggle("d-none", !enCurso);
+		}
+
+		async function manejarEnvio(evento) {
+			evento.preventDefault();
+			ocultarMensaje();
+
+			if (!validarFormulario()) {
+				formulario.querySelector(".is-invalid").focus();
+				return;
+			}
+
+			indicarEnvioEnCurso(true);
+			try {
+				const mensajeConfirmacion = await registrarBarberia(obtenerDatosFormulario());
+				mostrarMensaje(mensajeConfirmacion, "success");
+				formulario.reset();
+			} catch (error) {
+				mostrarMensaje(error.message, "danger");
+			} finally {
+				indicarEnvioEnCurso(false);
+			}
+		}
+
+		formulario.addEventListener("submit", manejarEnvio);
+
+		[campoNombreBarberia, campoRazonSocial, campoNit].forEach((campo) => {
+			campo.addEventListener("input", () => campo.classList.remove("is-invalid"));
+		});
+	</script>
+</body>
+</html>
