@@ -27,9 +27,9 @@
 
 							<div class="mb-3">
 								<label for="razonSocial" class="form-label">Razón social</label>
-								<input type="text" id="razonSocial" class="form-control" maxlength="50" autocomplete="off">
+								<input type="text" id="razonSocial" class="form-control" maxlength="128" placeholder="Ejemplo: Barbería Nueva SAS" autocomplete="off">
 								<div class="invalid-feedback"></div>
-								<div class="form-text">Entre 10 y 50 caracteres. Es el nombre legal registrado en la cámara de comercio.</div>
+								<div class="form-text">Entre 6 y 128 caracteres. Es el nombre legal registrado en la cámara de comercio y debe terminar en un espacio seguido de SAS en mayúscula.</div>
 							</div>
 
 							<div class="mb-4">
@@ -98,6 +98,8 @@
 		// ---------- Validaciones del formulario ----------
 
 		const FORMATO_NIT = /^[0-9]{8,10}-[0-9]$/;
+		const CARACTERES_RAZON_SOCIAL = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .,&'()-]+$/;
+		const TERMINACION_RAZON_SOCIAL = / SAS$/;
 
 		function validarNombreBarberia(valor) {
 			const nombre = valor.trim();
@@ -111,11 +113,18 @@
 		}
 
 		function validarRazonSocial(valor) {
-			if (valor.trim() === "") {
+			const razonSocial = valor.trim();
+			if (razonSocial === "") {
 				return "La razón social es obligatoria.";
 			}
-			if (valor.length < 10 || valor.length > 50) {
-				return "La razón social debe tener entre 10 y 50 caracteres.";
+			if (razonSocial.length < 6 || razonSocial.length > 128) {
+				return "La razón social debe tener entre 6 y 128 caracteres.";
+			}
+			if (!CARACTERES_RAZON_SOCIAL.test(razonSocial)) {
+				return "La razón social solo admite letras (con o sin tilde), números, espacios y los signos . , & - ' ( ).";
+			}
+			if (!TERMINACION_RAZON_SOCIAL.test(razonSocial)) {
+				return "La razón social debe terminar en un espacio seguido de SAS en mayúscula. Ejemplo: Barbería Nueva SAS.";
 			}
 			return "";
 		}
@@ -158,7 +167,7 @@
 		function obtenerDatosFormulario() {
 			return {
 				nombreBarberia: campoNombreBarberia.value.trim(),
-				razonSocial: campoRazonSocial.value,
+				razonSocial: campoRazonSocial.value.trim(),
 				nit: campoNit.value.trim(),
 			};
 		}
