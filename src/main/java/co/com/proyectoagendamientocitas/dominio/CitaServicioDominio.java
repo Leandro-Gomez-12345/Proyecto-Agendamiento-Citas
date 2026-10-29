@@ -3,6 +3,7 @@ package co.com.proyectoagendamientocitas.dominio;
 import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilNumero;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class CitaServicioDominio {
@@ -23,6 +24,10 @@ public class CitaServicioDominio {
 		this.duracionEnHorasElServicio = builder.duracionEnHorasElServicio;
 		this.duracionEnMinutosElServicio = builder.duracionEnMinutosElServicio;
 		this.tiempoExtra = builder.tiempoExtra;
+	}
+
+	public static CitaServicioDominio obtenerValorDefecto(CitaServicioDominio citaServicio) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(citaServicio, new Builder().build());
 	}
 
 	public UUID getId() {

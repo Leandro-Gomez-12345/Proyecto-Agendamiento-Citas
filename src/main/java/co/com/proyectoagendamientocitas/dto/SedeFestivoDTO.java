@@ -5,13 +5,13 @@ import java.util.UUID;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
-public final class FechaFestivoDTO {
+public final class SedeFestivoDTO {
 
 	private UUID id;
 	private SedeDTO sede;
 	private FestivoDTO festivo;
 
-	public FechaFestivoDTO() {
+	public SedeFestivoDTO() {
 		setId(UtilUUID.obtenerUUIDDefecto());
 		setSede(new SedeDTO());
 		setFestivo(new FestivoDTO());

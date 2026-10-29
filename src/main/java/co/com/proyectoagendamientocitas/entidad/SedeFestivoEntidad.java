@@ -5,19 +5,19 @@ import java.util.UUID;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
-public final class FechaFestivoEntidad {
+public final class SedeFestivoEntidad {
 
 	private UUID id;
 	private SedeEntidad sede;
 	private FestivoEntidad festivo;
 
-	public FechaFestivoEntidad() {
+	public SedeFestivoEntidad() {
 		setId(UtilUUID.obtenerUUIDDefecto());
 		setSede(new SedeEntidad());
 		setFestivo(new FestivoEntidad());
 	}
 
-	public FechaFestivoEntidad(UUID id, SedeEntidad sede, FestivoEntidad festivo) {
+	public SedeFestivoEntidad(UUID id, SedeEntidad sede, FestivoEntidad festivo) {
 		setId(id);
 		setSede(sede);
 		setFestivo(festivo);

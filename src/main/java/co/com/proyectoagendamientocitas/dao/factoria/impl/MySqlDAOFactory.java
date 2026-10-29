@@ -15,7 +15,6 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.ClienteDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.DepartamentoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.DiaSemanaDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.EstadoDAO;
-import co.com.proyectoagendamientocitas.dao.datos.entidad.FechaFestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.FestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.HorarioBarberoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.HorarioSedeDAO;
@@ -23,6 +22,7 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.MultaDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.PeriodoCierreDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.PrefijoCelularDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeDAO;
+import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeFestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.ServicioDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.TipoMultaDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.AgendaMySqlDAO;
@@ -37,13 +37,13 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.ClienteMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.DepartamentoMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.DiaSemanaMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.EstadoMySqlDAO;
-import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.FechaFestivoMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.FestivoMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.HorarioBarberoMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.HorarioSedeMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.MultaMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.PeriodoCierreMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.PrefijoCelularMySqlDAO;
+import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.SedeFestivoMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.SedeMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.ServicioMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.TipoMultaMySqlDAO;
@@ -138,8 +138,8 @@ public class MySqlDAOFactory extends DAOFactory {
 	}
 
 	@Override
-	public FechaFestivoDAO obtenerFechaFestivoDAO() {
-		return new FechaFestivoMySqlDAO(getConexion());
+	public SedeFestivoDAO obtenerSedeFestivoDAO() {
+		return new SedeFestivoMySqlDAO(getConexion());
 	}
 
 	@Override

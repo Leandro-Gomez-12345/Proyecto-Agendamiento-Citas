@@ -40,7 +40,7 @@ public final class BarberiaDTO {
 	}
 
 	public void setRazonSocial(String razonSocial) {
-		this.razonSocial = UtilTexto.obtenerValorDefecto(razonSocial);
+		this.razonSocial = UtilTexto.quitarEspaciosEnBlanco(razonSocial);
 	}
 
 	public String getNit() {

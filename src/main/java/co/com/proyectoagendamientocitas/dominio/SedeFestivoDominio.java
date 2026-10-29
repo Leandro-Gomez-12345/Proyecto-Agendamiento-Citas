@@ -5,20 +5,20 @@ import java.util.UUID;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
-public class FechaFestivoDominio {
+public class SedeFestivoDominio {
 
 	private UUID id;
 	private SedeDominio sede;
 	private FestivoDominio festivo;
 
-	private FechaFestivoDominio(Builder builder) {
+	private SedeFestivoDominio(Builder builder) {
 		this.id = builder.id;
 		this.sede = builder.sede;
 		this.festivo = builder.festivo;
 	}
 
-	public static FechaFestivoDominio obtenerValorDefecto(FechaFestivoDominio fechaFestivo) {
-		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(fechaFestivo, new Builder().build());
+	public static SedeFestivoDominio obtenerValorDefecto(SedeFestivoDominio sedeFestivo) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(sedeFestivo, new Builder().build());
 	}
 
 	public UUID getId() {
@@ -60,8 +60,8 @@ public class FechaFestivoDominio {
 			return this;
 		}
 
-		public FechaFestivoDominio build() {
-			return new FechaFestivoDominio(this);
+		public SedeFestivoDominio build() {
+			return new SedeFestivoDominio(this);
 		}
 	}
 }

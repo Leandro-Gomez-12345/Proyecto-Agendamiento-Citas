@@ -65,7 +65,7 @@ public class BarberiaDominio {
 		}
 
 		public Builder razonSocial(String razonSocial) {
-			this.razonSocial = UtilTexto.obtenerValorDefecto(razonSocial);
+			this.razonSocial = UtilTexto.quitarEspaciosEnBlanco(razonSocial);
 			return this;
 		}
 

@@ -8,6 +8,7 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilBooleano;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilFechaHora;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilHora;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilNumero;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class MultaDominio {
@@ -28,6 +29,10 @@ public class MultaDominio {
 		this.horaGeneracion = builder.horaGeneracion;
 		this.fechaHoraPago = builder.fechaHoraPago;
 		this.pagada = builder.pagada;
+	}
+
+	public static MultaDominio obtenerValorDefecto(MultaDominio multa) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(multa, new Builder().build());
 	}
 
 	public UUID getId() {

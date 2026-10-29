@@ -14,7 +14,6 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.ClienteDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.DepartamentoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.DiaSemanaDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.EstadoDAO;
-import co.com.proyectoagendamientocitas.dao.datos.entidad.FechaFestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.FestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.HorarioBarberoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.HorarioSedeDAO;
@@ -22,6 +21,7 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.MultaDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.PeriodoCierreDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.PrefijoCelularDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeDAO;
+import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeFestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.ServicioDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.TipoMultaDAO;
 import co.com.proyectoagendamientocitas.dao.factoria.enums.FactoriaEnum;
@@ -105,7 +105,7 @@ public abstract class DAOFactory {
 
 	public abstract PeriodoCierreDAO obtenerPeriodoCierreDAO();
 
-	public abstract FechaFestivoDAO obtenerFechaFestivoDAO();
+	public abstract SedeFestivoDAO obtenerSedeFestivoDAO();
 
 	public abstract BarberoServicioDAO obtenerBarberoServicioDAO();
 

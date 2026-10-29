@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilFechaHora;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public class BloqueoDominio {
@@ -18,6 +19,10 @@ public class BloqueoDominio {
 		this.barbero = builder.barbero;
 		this.fechaHoraInicio = builder.fechaHoraInicio;
 		this.fechaHoraFinal = builder.fechaHoraFinal;
+	}
+
+	public static BloqueoDominio obtenerValorDefecto(BloqueoDominio bloqueo) {
+		return UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(bloqueo, new Builder().build());
 	}
 
 	public UUID getId() {
