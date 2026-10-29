@@ -1,7 +1,5 @@
 package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia;
 
-import java.util.regex.Pattern;
-
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.Rule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun.ValidadorAtributos;
 
@@ -12,7 +10,7 @@ public final class AsegurarNitBarberiaValidoRule implements Rule<String> {
 	private static final String ETIQUETA = "NIT";
 	private static final int LONGITUD_MINIMA = 10;
 	private static final int LONGITUD_MAXIMA = 12;
-	private static final Pattern FORMATO = Pattern.compile("^[0-9]{8,10}-[0-9]$");
+	private static final String FORMATO = "^[0-9]{8,10}-[0-9]$";
 	private static final String DESCRIPCION_FORMATO = "entre 8 y 10 dígitos, un guion (-) y 1 dígito";
 
 	private AsegurarNitBarberiaValidoRule() {

@@ -22,7 +22,7 @@ public final class UtilTexto {
 		return obtenerValorDefecto(valor, VACIA);
 	}
 
-	public static String quitarEspaciosEnBlanco( String valor) {
+	public static String quitarEspaciosEnBlanco(String valor) {
 		return obtenerValorDefecto(valor).trim();
 	}
 
@@ -57,4 +57,7 @@ public final class UtilTexto {
 		return formato.matcher(quitarEspaciosEnBlanco(valor)).matches();
 	}
 	
+	public static boolean formatoEsValido(String valor, String patron) {
+		return obtenerValorDefecto(valor).matches(obtenerValorDefecto(patron));
+	}
 }

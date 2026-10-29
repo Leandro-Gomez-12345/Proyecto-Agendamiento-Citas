@@ -1,7 +1,5 @@
 package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun;
 
-import java.util.regex.Pattern;
-
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasNegocioExcepcion;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
@@ -32,9 +30,9 @@ public final class ValidadorAtributos {
 		}
 	}
 
-	public static void asegurarFormato(final String valor, final String etiqueta, final Pattern formato,
+	public static void asegurarFormato(final String valor, final String etiqueta, final String formato,
 			final String descripcionFormato) {
-		if (!UtilTexto.cumpleFormato(valor, formato)) {
+		if (!UtilTexto.formatoEsValido(valor, formato)) {
 			lanzar(CatalogoMensajes.Reglas.FORMATO_NO_VALIDO.formatted(etiqueta, descripcionFormato));
 		}
 	}
