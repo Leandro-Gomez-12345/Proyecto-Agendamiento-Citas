@@ -16,10 +16,10 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 
 	private static final String SQL_CREAR =
-			"INSERT INTO barberia (id, nombreBarberia, razonSocial, nit) VALUES (?, ?, ?, ?)";
-	private static final String SQL_CONSULTAR = "SELECT id, nombreBarberia, razonSocial, nit FROM barberia";
+			"INSERT INTO barberia (id, tipoSociedad, nombreBarberia, denominacion, razonSocial, nit) VALUES (?, ?, ?, ?, ?, ?)";
+	private static final String SQL_CONSULTAR = "SELECT id, tipoSociedad, nombreBarberia, denominacion, razonSocial, nit FROM barberia";
 	private static final String SQL_ACTUALIZAR =
-			"UPDATE barberia SET nombreBarberia = ?, razonSocial = ?, nit = ? WHERE id = ?";
+			"UPDATE barberia SET tipoSociedad = ?, nombreBarberia = ?, denominacion = ?, razonSocial = ?, nit = ? WHERE id = ?";
 	private static final String SQL_ELIMINAR = "DELETE FROM barberia WHERE id = ?";
 
 	public BarberiaMySqlDAO(final Connection conexion) {
@@ -29,8 +29,8 @@ public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 	@Override
 	public void crear(final BarberiaEntidad entidad) {
 		ejecutarActualizacion(SQL_CREAR, CatalogoMensajes.Datos.USUARIO_ERROR_CREANDO_BARBERIA,
-				entidad.getId().toString(), entidad.getNombreBarberia(), entidad.getRazonSocial(),
-				entidad.getNit());
+				entidad.getId().toString(), entidad.getTipoSociedad().getId().toString(), entidad.getNombreBarberia(),
+				entidad.getDenominacion(), entidad.getRazonSocial(), entidad.getNit());
 	}
 
 	@Override
@@ -46,7 +46,9 @@ public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 		var filtroSeguro = UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(filtro, new BarberiaEntidad());
 		var consulta = new FiltroSql(SQL_CONSULTAR)
 				.conId("id", filtroSeguro.getId())
+				.conId("tipoSociedad", filtroSeguro.getTipoSociedad().getId())
 				.conTexto("nombreBarberia", filtroSeguro.getNombreBarberia())
+				.conTexto("denominacion", filtroSeguro.getDenominacion())
 				.conTexto("razonSocial", filtroSeguro.getRazonSocial())
 				.conTexto("nit", filtroSeguro.getNit());
 		return ejecutarConsulta(consulta.getSentencia(), consulta.getParametros(), this::mapear,
@@ -62,7 +64,8 @@ public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 	@Override
 	public void actualizar(final UUID id, final BarberiaEntidad entidad) {
 		ejecutarActualizacion(SQL_ACTUALIZAR, CatalogoMensajes.Datos.USUARIO_ERROR_ACTUALIZANDO_BARBERIA,
-				entidad.getNombreBarberia(), entidad.getRazonSocial(), entidad.getNit(), id.toString());
+				entidad.getTipoSociedad().getId().toString(), entidad.getNombreBarberia(), entidad.getDenominacion(),
+				entidad.getRazonSocial(), entidad.getNit(), id.toString());
 	}
 
 	@Override
@@ -74,7 +77,9 @@ public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 	private BarberiaEntidad mapear(final ResultSet resultados) throws SQLException {
 		var entidad = new BarberiaEntidad();
 		entidad.setId(leerUUID(resultados, "id"));
+		entidad.getTipoSociedad().setId(leerUUID(resultados, "tipoSociedad"));
 		entidad.setNombreBarberia(resultados.getString("nombreBarberia"));
+		entidad.setDenominacion(resultados.getString("denominacion"));
 		entidad.setRazonSocial(resultados.getString("razonSocial"));
 		entidad.setNit(resultados.getString("nit"));
 		return entidad;

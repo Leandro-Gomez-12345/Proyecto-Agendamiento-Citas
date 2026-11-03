@@ -22,7 +22,9 @@ public final class BarberiaEntidadAssembler implements EntidadAssembler<Barberia
 		var dominioTmp = UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(dominio, new BarberiaDominio.Builder().build());
 		var entidad = new BarberiaEntidad();
 		entidad.setId(dominioTmp.getId());
+		entidad.setTipoSociedad(TipoSociedadEntidadAssembler.getInstance().convertirAEntidad(dominioTmp.getTipoSociedad()));
 		entidad.setNombreBarberia(dominioTmp.getNombreBarberia());
+		entidad.setDenominacion(dominioTmp.getDenominacion());
 		entidad.setRazonSocial(dominioTmp.getRazonSocial());
 		entidad.setNit(dominioTmp.getNit());
 		return entidad;
@@ -33,7 +35,9 @@ public final class BarberiaEntidadAssembler implements EntidadAssembler<Barberia
 		var entidadTmp = UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(entidad, new BarberiaEntidad());
 		return new BarberiaDominio.Builder()
 				.id(entidadTmp.getId())
+				.tipoSociedad(TipoSociedadEntidadAssembler.getInstance().convertirADominio(entidadTmp.getTipoSociedad()))
 				.nombreBarberia(entidadTmp.getNombreBarberia())
+				.denominacion(entidadTmp.getDenominacion())
 				.razonSocial(entidadTmp.getRazonSocial())
 				.nit(entidadTmp.getNit())
 				.build();

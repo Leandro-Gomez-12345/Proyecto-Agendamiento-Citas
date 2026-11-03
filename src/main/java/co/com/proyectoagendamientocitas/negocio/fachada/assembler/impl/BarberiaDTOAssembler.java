@@ -22,7 +22,9 @@ public final class BarberiaDTOAssembler implements DTOAssembler<BarberiaDominio,
 		var dominioTmp = UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(dominio, new BarberiaDominio.Builder().build());
 		var dto = new BarberiaDTO();
 		dto.setId(dominioTmp.getId());
+		dto.setTipoSociedad(TipoSociedadDTOAssembler.getInstance().convertirADTO(dominioTmp.getTipoSociedad()));
 		dto.setNombreBarberia(dominioTmp.getNombreBarberia());
+		dto.setDenominacion(dominioTmp.getDenominacion());
 		dto.setRazonSocial(dominioTmp.getRazonSocial());
 		dto.setNit(dominioTmp.getNit());
 		return dto;
@@ -33,7 +35,9 @@ public final class BarberiaDTOAssembler implements DTOAssembler<BarberiaDominio,
 		var dtoTmp = UtilObjeto.obtenerValorDefectoSiValorOriginalEsNulo(dto, new BarberiaDTO());
 		return new BarberiaDominio.Builder()
 				.id(dtoTmp.getId())
+				.tipoSociedad(TipoSociedadDTOAssembler.getInstance().convertirADominio(dtoTmp.getTipoSociedad()))
 				.nombreBarberia(dtoTmp.getNombreBarberia())
+				.denominacion(dtoTmp.getDenominacion())
 				.razonSocial(dtoTmp.getRazonSocial())
 				.nit(dtoTmp.getNit())
 				.build();

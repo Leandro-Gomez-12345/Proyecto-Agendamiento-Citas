@@ -24,6 +24,7 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeFestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.ServicioDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.TipoMultaDAO;
+import co.com.proyectoagendamientocitas.dao.datos.entidad.TipoSociedadDAO;
 import co.com.proyectoagendamientocitas.dao.factoria.enums.FactoriaEnum;
 import co.com.proyectoagendamientocitas.dao.factoria.impl.MySqlDAOFactory;
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
@@ -76,6 +77,8 @@ public abstract class DAOFactory {
 	public void cancelarTransaccion() {
 		UtilSQL.cancelarTransaccion(conexion);
 	}
+	
+	public abstract TipoSociedadDAO obtenerTipoSociedadDAO();
 
 	public abstract BarberiaDAO obtenerBarberiaDAO();
 

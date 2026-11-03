@@ -6,9 +6,11 @@ import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.dominio.BarberiaDominio;
 import co.com.proyectoagendamientocitas.negocio.negocio.BarberiaNegocio;
 import co.com.proyectoagendamientocitas.negocio.negocio.assembler.impl.BarberiaEntidadAssembler;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarDenominacionBarberiaNoExistaRule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarIdBarberiaUnicoRule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarNitBarberiaNoExistaRule;
-import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarRazonSocialBarberiaNoExistaRule;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarTipoSociedadBarberiaExisteRule;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.FormarRazonSocialBarberiaRule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.ValidarDatosRegistrarBarberiaRule;
 
 public class BarberiaNegocioImpl implements BarberiaNegocio {
@@ -24,10 +26,13 @@ public class BarberiaNegocioImpl implements BarberiaNegocio {
 	@Override
 	public BarberiaDominio registrarBarberia(final BarberiaDominio datos) {
 		ValidarDatosRegistrarBarberiaRule.obtenerInstancia().ejecutar(datos);
-		AsegurarRazonSocialBarberiaNoExistaRule.obtenerInstancia().ejecutar(datos, daoFactory);
-		AsegurarNitBarberiaNoExistaRule.obtenerInstancia().ejecutar(datos, daoFactory);
 
 		var barberiaEntidad = BarberiaEntidadAssembler.getInstance().convertirAEntidad(datos);
+		AsegurarTipoSociedadBarberiaExisteRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
+		AsegurarDenominacionBarberiaNoExistaRule.obtenerInstancia().ejecutar(datos, daoFactory);
+		AsegurarNitBarberiaNoExistaRule.obtenerInstancia().ejecutar(datos, daoFactory);
+
+		FormarRazonSocialBarberiaRule.obtenerInstancia().ejecutar(barberiaEntidad);
 		AsegurarIdBarberiaUnicoRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
 
 		daoFactory.obtenerBarberiaDAO().crear(barberiaEntidad);

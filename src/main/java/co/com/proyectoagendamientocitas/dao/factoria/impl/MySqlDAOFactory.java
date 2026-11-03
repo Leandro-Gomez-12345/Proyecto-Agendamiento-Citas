@@ -25,6 +25,7 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.SedeFestivoDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.ServicioDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.TipoMultaDAO;
+import co.com.proyectoagendamientocitas.dao.datos.entidad.TipoSociedadDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.AgendaMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.BarberiaMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.BarberoMySqlDAO;
@@ -47,6 +48,7 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.SedeFestivoMySql
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.SedeMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.ServicioMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.TipoMultaMySqlDAO;
+import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.TipoSociedadMySqlDAO;
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasDatosExcepcion;
@@ -175,5 +177,10 @@ public class MySqlDAOFactory extends DAOFactory {
 	@Override
 	public MultaDAO obtenerMultaDAO() {
 		return new MultaMySqlDAO(getConexion());
+	}
+
+	@Override
+	public TipoSociedadDAO obtenerTipoSociedadDAO() {
+		return new TipoSociedadMySqlDAO(getConexion());
 	}
 }
