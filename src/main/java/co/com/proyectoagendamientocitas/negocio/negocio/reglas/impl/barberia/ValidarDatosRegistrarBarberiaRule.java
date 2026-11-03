@@ -2,10 +2,13 @@ package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia;
 
 import co.com.proyectoagendamientocitas.dominio.BarberiaDominio;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.Rule;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun.ValidadorAtributos;
 
 public final class ValidarDatosRegistrarBarberiaRule implements Rule<BarberiaDominio> {
 
 	private static final Rule<BarberiaDominio> INSTANCIA = new ValidarDatosRegistrarBarberiaRule();
+
+	private static final String ETIQUETA_TIPO_SOCIEDAD = "tipo de sociedad";
 
 	private ValidarDatosRegistrarBarberiaRule() {
 
@@ -20,7 +23,8 @@ public final class ValidarDatosRegistrarBarberiaRule implements Rule<BarberiaDom
 		var barberia = datos[0];
 
 		AsegurarNombreBarberiaValidoRule.obtenerInstancia().ejecutar(barberia.getNombreBarberia());
-		AsegurarRazonSocialBarberiaValidaRule.obtenerInstancia().ejecutar(barberia.getRazonSocial());
+		ValidadorAtributos.asegurarReferenciaObligatoria(barberia.getTipoSociedad().getId(), ETIQUETA_TIPO_SOCIEDAD);
+		AsegurarDenominacionBarberiaValidaRule.obtenerInstancia().ejecutar(barberia.getDenominacion());
 		AsegurarNitBarberiaValidoRule.obtenerInstancia().ejecutar(barberia.getNit());
 	}
 }

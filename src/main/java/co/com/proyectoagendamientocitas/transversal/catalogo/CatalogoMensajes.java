@@ -58,6 +58,16 @@ public final class CatalogoMensajes {
 		
 	}
 
+	public static final class TipoSociedadImpl {
+
+		private TipoSociedadImpl() {
+
+		}
+
+		public static final String USUARIO_ERROR_CONSULTANDO_TIPOS_SOCIEDAD = "Se presentó un problema tratando de consultar los tipos de sociedad."
+				+ CONTACTAR_ADMINISTRADOR;
+	}
+
 	public static final class Datos {
 
 		private Datos() {
@@ -93,6 +103,9 @@ public final class CatalogoMensajes {
 				+ CONTACTAR_ADMINISTRADOR;
 
 		public static final String USUARIO_ERROR_CONSULTANDO_TIPO_MULTA = "Se presentó un problema tratando de consultar la información del tipo de multa."
+				+ CONTACTAR_ADMINISTRADOR;
+
+		public static final String USUARIO_ERROR_CONSULTANDO_TIPO_SOCIEDAD = "Se presentó un problema tratando de consultar la información del tipo de sociedad."
 				+ CONTACTAR_ADMINISTRADOR;
 
 		public static final String USUARIO_ERROR_CREANDO_FESTIVO = "Se presentó un problema tratando de crear la información del festivo."
@@ -245,6 +258,8 @@ public final class CatalogoMensajes {
 		public static final String ASEGURAR_CITA_NO_SOLICITADA_EN_EL_PASADO = "La cita no se puede solicitar para una fecha y hora que ya pasaron.";
 		public static final String ASEGURAR_CITA_PUEDE_FINALIZARSE = "La cita no se encuentra en un estado desde el que se pueda finalizar.";
 		public static final String ASEGURAR_CITA_PUEDE_REGISTRARSE_NO_PAGADA = "La cita no se encuentra en un estado desde el que se pueda registrar el no pago.";
+		public static final String ASEGURAR_DENOMINACION_BARBERIA_NO_EXISTA = "Ya existe una barbería registrada con esa denominación.";
+		public static final String ASEGURAR_DENOMINACION_BARBERIA_SIN_SUFIJO_SOCIEDAD = "La denominación no debe terminar en un sufijo de tipo de sociedad (S.A.S., SAS, Ltda., Limitada, S.A., SA); el sistema lo agrega según el tipo de sociedad elegido.";
 		public static final String ASEGURAR_DURACION_SERVICIO_BARBERO_MAYOR_CERO = "La suma del tiempo en horas y minutos para realizar el servicio debe ser mayor a cero.";
 		public static final String ASEGURAR_EXISTE_BARBERIA_CON_ID = "No existe la barbería con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_BARBERO_CON_ID = "No existe el barbero con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
@@ -261,6 +276,7 @@ public final class CatalogoMensajes {
 		public static final String ASEGURAR_EXISTE_PERIODO_CIERRE_CON_ID = "No existe el periodo de cierre con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_SEDE_CON_ID = "No existe la sede con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_SERVICIO_CON_ID = "No existe el servicio con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
+		public static final String ASEGURAR_EXISTE_TIPO_SOCIEDAD_CON_ID = "No existe el tipo de sociedad con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_FECHA_FESTIVO_NO_EXISTA = "La sede ya tiene registrada la apertura de ese festivo.";
 		public static final String ASEGURAR_FECHA_HORA_FINAL_MAYOR_INICIO_BLOQUEO = "La fecha y hora de fin del bloqueo debe ser mayor a la fecha y hora de inicio.";
 		public static final String ASEGURAR_FECHA_HORA_FINAL_MAYOR_INICIO_PERIODO_CIERRE = "La fecha y hora final del periodo de cierre debe ser mayor a la fecha y hora de inicio.";
@@ -285,7 +301,6 @@ public final class CatalogoMensajes {
 		public static final String ASEGURAR_PERIODO_CIERRE_NO_INICIADO = "El periodo de cierre ya empezó y por lo tanto no es posible eliminarlo.";
 		public static final String ASEGURAR_PERIODO_CIERRE_NO_SE_CRUCE = "El periodo de cierre se cruza con otro periodo de cierre de la misma sede.";
 		public static final String ASEGURAR_PERIODO_CIERRE_NO_TERMINADO = "El periodo de cierre ya terminó y por lo tanto no es posible cambiarlo.";
-		public static final String ASEGURAR_RAZON_SOCIAL_BARBERIA_NO_EXISTA = "Ya existe una barbería registrada con esa razón social.";
 		public static final String ASEGURAR_SEDE_CON_HORARIO_EL_DIA_DEL_FESTIVO = "La sede no tiene ningún horario vigente el día de la semana en que cae el festivo.";
 		public static final String ASEGURAR_SEDE_SIN_BARBEROS_TRABAJANDO = "La sede tiene barberos trabajando actualmente y no se puede dar de baja.";
 		public static final String ASEGURAR_SERVICIO_DISPONIBLE = "El servicio ya se encuentra retirado.";

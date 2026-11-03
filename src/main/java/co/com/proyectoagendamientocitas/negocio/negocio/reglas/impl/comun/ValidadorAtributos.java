@@ -1,8 +1,11 @@
 package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun;
 
+import java.util.UUID;
+
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasNegocioExcepcion;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 public final class ValidadorAtributos {
 
@@ -12,6 +15,12 @@ public final class ValidadorAtributos {
 
 	public static void asegurarObligatorio(final String valor, final String etiqueta) {
 		if (UtilTexto.esVacia(valor)) {
+			lanzar(CatalogoMensajes.Reglas.DATO_OBLIGATORIO.formatted(etiqueta));
+		}
+	}
+
+	public static void asegurarReferenciaObligatoria(final UUID id, final String etiqueta) {
+		if (UtilUUID.obtenerUUIDDefecto().equals(id)) {
 			lanzar(CatalogoMensajes.Reglas.DATO_OBLIGATORIO.formatted(etiqueta));
 		}
 	}

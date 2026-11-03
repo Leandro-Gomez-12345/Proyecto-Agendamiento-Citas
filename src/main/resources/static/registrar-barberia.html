@@ -26,10 +26,25 @@
 							</div>
 
 							<div class="mb-3">
-								<label for="razonSocial" class="form-label">Razón social</label>
-								<input type="text" id="razonSocial" class="form-control" maxlength="128" placeholder="Ejemplo: Barbería Nueva SAS" autocomplete="off">
+								<label for="tipoSociedad" class="form-label">Tipo de sociedad</label>
+								<select id="tipoSociedad" class="form-select" disabled>
+									<option value="">Cargando tipos de sociedad...</option>
+								</select>
 								<div class="invalid-feedback"></div>
-								<div class="form-text">Entre 6 y 128 caracteres. Es el nombre legal registrado en la cámara de comercio y debe terminar en un espacio seguido de SAS en mayúscula.</div>
+								<div class="form-text">Es el tipo de sociedad con el que está constituida la barbería ante la cámara de comercio.</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="denominacion" class="form-label">Denominación</label>
+								<input type="text" id="denominacion" class="form-control" maxlength="117" placeholder="Ejemplo: BarberClub Colombia" autocomplete="off">
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Entre 2 y 117 caracteres. Es el nombre registrado en la cámara de comercio, sin el sufijo del tipo de sociedad (S.A.S., SAS, Ltda., Limitada, S.A., SA).</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="razonSocial" class="form-label">Razón social</label>
+								<input type="text" id="razonSocial" class="form-control" readonly tabindex="-1">
+								<div class="form-text">El sistema la forma sola: la denominación seguida del sufijo del tipo de sociedad.</div>
 							</div>
 
 							<div class="mb-4">
@@ -51,18 +66,42 @@
 	</main>
 
 	<script>
-		// ---------- Llamada al backend ----------
+		// ---------- Llamadas al backend ----------
 
 		const URL_BARBERIAS = "/api/v1/barberias";
+		const URL_TIPOS_SOCIEDAD = "/api/v1/tipos-sociedad";
 
 		const MENSAJE_SIN_CONEXION = "No fue posible comunicarse con el servidor. Verifique que la aplicación esté en ejecución e intente de nuevo.";
 		const MENSAJE_ERROR_GENERICO = "Se presentó un problema tratando de registrar la barbería. Intente de nuevo.";
+		const MENSAJE_ERROR_TIPOS_SOCIEDAD = "Se presentó un problema tratando de consultar los tipos de sociedad. Recargue la página e intente de nuevo.";
 		const MENSAJE_REGISTRO_EXITOSO = "La barbería se registró correctamente.";
+
+		/**
+		 * Consulta los tipos de sociedad disponibles (GET /api/v1/tipos-sociedad).
+		 *
+		 * @returns {Promise<Array<{id: string, nombre: string, sufijo: string}>>}
+		 * @throws {Error} con un mensaje listo para mostrarle al usuario si no se logra la consulta.
+		 */
+		async function consultarTiposSociedad() {
+			let respuesta;
+			try {
+				respuesta = await fetch(URL_TIPOS_SOCIEDAD);
+			} catch {
+				throw new Error(MENSAJE_SIN_CONEXION);
+			}
+
+			const cuerpo = await leerCuerpoJson(respuesta);
+
+			if (!respuesta.ok) {
+				throw new Error(cuerpo?.mensajes?.[0] ?? MENSAJE_ERROR_TIPOS_SOCIEDAD);
+			}
+			return cuerpo?.datos ?? [];
+		}
 
 		/**
 		 * Envía los datos de la nueva barbería al backend (POST /api/v1/barberias).
 		 *
-		 * @param {{nombreBarberia: string, razonSocial: string, nit: string}} datos
+		 * @param {{nombreBarberia: string, tipoSociedad: {id: string}, denominacion: string, nit: string}} datos
 		 * @returns {Promise<string>} el mensaje de confirmación que devuelve el backend.
 		 * @throws {Error} con un mensaje listo para mostrarle al usuario si el backend rechaza
 		 *                 la operación o no se logra la comunicación.
@@ -98,8 +137,8 @@
 		// ---------- Validaciones del formulario ----------
 
 		const FORMATO_NIT = /^[0-9]{8,10}-[0-9]$/;
-		const CARACTERES_RAZON_SOCIAL = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 .,&'()-]+$/;
-		const TERMINACION_RAZON_SOCIAL = / SAS$/;
+		const CARACTERES_DENOMINACION = /^[\p{L}0-9 .,&'()-]+$/u;
+		const TERMINA_EN_SUFIJO_SOCIEDAD = /^(.*\s)?(S\.?A\.?S\.?|S\.?A\.?|Ltda\.?|Limitada)$/i;
 
 		function validarNombreBarberia(valor) {
 			const nombre = valor.trim();
@@ -112,19 +151,26 @@
 			return "";
 		}
 
-		function validarRazonSocial(valor) {
-			const razonSocial = valor.trim();
-			if (razonSocial === "") {
-				return "La razón social es obligatoria.";
+		function validarTipoSociedad(valor) {
+			if (valor === "") {
+				return "El tipo de sociedad es obligatorio.";
 			}
-			if (razonSocial.length < 6 || razonSocial.length > 128) {
-				return "La razón social debe tener entre 6 y 128 caracteres.";
+			return "";
+		}
+
+		function validarDenominacion(valor) {
+			const denominacion = valor.trim();
+			if (denominacion === "") {
+				return "La denominación es obligatoria.";
 			}
-			if (!CARACTERES_RAZON_SOCIAL.test(razonSocial)) {
-				return "La razón social solo admite letras (con o sin tilde), números, espacios y los signos . , & - ' ( ).";
+			if (denominacion.length < 2 || denominacion.length > 117) {
+				return "La denominación debe tener entre 2 y 117 caracteres.";
 			}
-			if (!TERMINACION_RAZON_SOCIAL.test(razonSocial)) {
-				return "La razón social debe terminar en un espacio seguido de SAS en mayúscula. Ejemplo: Barbería Nueva SAS.";
+			if (!CARACTERES_DENOMINACION.test(denominacion)) {
+				return "La denominación solo admite letras (con o sin tilde), números, espacios y los signos . , & - ' ( ).";
+			}
+			if (TERMINA_EN_SUFIJO_SOCIEDAD.test(denominacion)) {
+				return "La denominación no debe terminar en un sufijo de tipo de sociedad (S.A.S., SAS, Ltda., Limitada, S.A., SA); el sistema lo agrega según el tipo de sociedad elegido.";
 			}
 			return "";
 		}
@@ -144,11 +190,15 @@
 
 		const formulario = document.getElementById("formularioBarberia");
 		const campoNombreBarberia = document.getElementById("nombreBarberia");
+		const campoTipoSociedad = document.getElementById("tipoSociedad");
+		const campoDenominacion = document.getElementById("denominacion");
 		const campoRazonSocial = document.getElementById("razonSocial");
 		const campoNit = document.getElementById("nit");
 		const botonRegistrar = document.getElementById("botonRegistrar");
 		const indicadorCarga = document.getElementById("indicadorCarga");
 		const areaMensaje = document.getElementById("areaMensaje");
+
+		let tiposSociedad = [];
 
 		function marcarCampo(campo, mensajeError) {
 			const esValido = mensajeError === "";
@@ -159,17 +209,43 @@
 
 		function validarFormulario() {
 			const nombreEsValido = marcarCampo(campoNombreBarberia, validarNombreBarberia(campoNombreBarberia.value));
-			const razonSocialEsValida = marcarCampo(campoRazonSocial, validarRazonSocial(campoRazonSocial.value));
+			const tipoSociedadEsValido = marcarCampo(campoTipoSociedad, validarTipoSociedad(campoTipoSociedad.value));
+			const denominacionEsValida = marcarCampo(campoDenominacion, validarDenominacion(campoDenominacion.value));
 			const nitEsValido = marcarCampo(campoNit, validarNit(campoNit.value));
-			return nombreEsValido && razonSocialEsValida && nitEsValido;
+			return nombreEsValido && tipoSociedadEsValido && denominacionEsValida && nitEsValido;
 		}
 
 		function obtenerDatosFormulario() {
 			return {
 				nombreBarberia: campoNombreBarberia.value.trim(),
-				razonSocial: campoRazonSocial.value.trim(),
+				tipoSociedad: { id: campoTipoSociedad.value },
+				denominacion: campoDenominacion.value.trim(),
 				nit: campoNit.value.trim(),
 			};
+		}
+
+		function mostrarRazonSocial() {
+			const tipoSociedad = tiposSociedad.find((tipo) => tipo.id === campoTipoSociedad.value);
+			const denominacion = campoDenominacion.value.trim();
+			campoRazonSocial.value = tipoSociedad && denominacion !== "" ? `${denominacion} ${tipoSociedad.sufijo}` : "";
+		}
+
+		function mostrarTiposSociedad() {
+			campoTipoSociedad.replaceChildren(new Option("Seleccione un tipo de sociedad", ""));
+			tiposSociedad.forEach((tipo) => {
+				campoTipoSociedad.add(new Option(`${tipo.nombre} (${tipo.sufijo})`, tipo.id));
+			});
+			campoTipoSociedad.disabled = false;
+		}
+
+		async function cargarTiposSociedad() {
+			try {
+				tiposSociedad = await consultarTiposSociedad();
+				mostrarTiposSociedad();
+			} catch (error) {
+				campoTipoSociedad.replaceChildren(new Option("No fue posible cargar los tipos de sociedad", ""));
+				mostrarMensaje(error.message, "danger");
+			}
 		}
 
 		function mostrarMensaje(texto, tipo) {
@@ -201,6 +277,7 @@
 				const mensajeConfirmacion = await registrarBarberia(obtenerDatosFormulario());
 				mostrarMensaje(mensajeConfirmacion, "success");
 				formulario.reset();
+				mostrarRazonSocial();
 			} catch (error) {
 				mostrarMensaje(error.message, "danger");
 			} finally {
@@ -210,9 +287,14 @@
 
 		formulario.addEventListener("submit", manejarEnvio);
 
-		[campoNombreBarberia, campoRazonSocial, campoNit].forEach((campo) => {
+		[campoNombreBarberia, campoTipoSociedad, campoDenominacion, campoNit].forEach((campo) => {
 			campo.addEventListener("input", () => campo.classList.remove("is-invalid"));
 		});
+		[campoTipoSociedad, campoDenominacion].forEach((campo) => {
+			campo.addEventListener("input", mostrarRazonSocial);
+		});
+
+		cargarTiposSociedad();
 	</script>
 </body>
 </html>
