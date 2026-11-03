@@ -52,12 +52,13 @@ import co.com.proyectoagendamientocitas.dao.datos.entidad.mysql.TipoSociedadMySq
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasDatosExcepcion;
+import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 
 public class MySqlDAOFactory extends DAOFactory {
 
-	private static final String URL = "jdbc:mysql://localhost:3306/agendamientocitas";
-	private static final String USUARIO = "root";
-	private static final String CONTRASENA = "";
+	private static final String URL = UtilTexto.obtenerValorDefecto(System.getenv("DB_URL"));
+	private static final String USUARIO = UtilTexto.obtenerValorDefecto(System.getenv("DB_USUARIO"));;
+	private static final String CONTRASENA = UtilTexto.obtenerValorDefecto(System.getenv("DB_CLAVE"));;
 
 	@Override
 	protected void abrirConexion() {
