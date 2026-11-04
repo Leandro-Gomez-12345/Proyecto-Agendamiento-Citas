@@ -19,6 +19,12 @@ public final class ValidadorAtributos {
 		}
 	}
 
+	public static void asegurarTexto(final String valor, final String etiqueta, final int longitudMinima,
+			final int longitudMaxima) {
+		asegurarObligatorio(valor, etiqueta);
+		asegurarLongitud(valor, etiqueta, longitudMinima, longitudMaxima);
+	}
+
 	public static void asegurarReferenciaObligatoria(final UUID id, final String etiqueta) {
 		if (UtilUUID.obtenerUUIDDefecto().equals(id)) {
 			lanzar(CatalogoMensajes.Reglas.DATO_OBLIGATORIO.formatted(etiqueta));

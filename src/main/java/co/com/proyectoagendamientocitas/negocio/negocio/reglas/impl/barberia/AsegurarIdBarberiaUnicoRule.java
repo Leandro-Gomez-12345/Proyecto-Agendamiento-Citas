@@ -4,24 +4,23 @@ import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.entidad.BarberiaEntidad;
-import co.com.proyectoagendamientocitas.negocio.negocio.reglas.Rule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun.ReglaConDAO;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
-public final class AsegurarIdBarberiaUnicoRule extends ReglaConDAO<BarberiaEntidad> {
+public final class AsegurarIdBarberiaUnicoRule implements ReglaConDAO<BarberiaEntidad> {
 
-	private static final Rule<Object> INSTANCIA = new AsegurarIdBarberiaUnicoRule();
+	private static final ReglaConDAO<BarberiaEntidad> INSTANCIA = new AsegurarIdBarberiaUnicoRule();
 
 	private AsegurarIdBarberiaUnicoRule() {
-		super(BarberiaEntidad.class);
+
 	}
 
-	public static Rule<Object> obtenerInstancia() {
+	public static ReglaConDAO<BarberiaEntidad> obtenerInstancia() {
 		return INSTANCIA;
 	}
 
 	@Override
-	protected void aplicar(final BarberiaEntidad barberia, final DAOFactory daoFactory) {
+	public void ejecutar(final BarberiaEntidad barberia, final DAOFactory daoFactory) {
 		do {
 			barberia.setId(UtilUUID.generar());
 		} while (existeBarberiaConId(barberia.getId(), daoFactory));

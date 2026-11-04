@@ -23,7 +23,6 @@ public final class AsegurarNombreBarberiaValidoRule implements Rule<String> {
 	public void ejecutar(final String... datos) {
 		var nombreBarberia = datos[0];
 
-		ValidadorAtributos.asegurarObligatorio(nombreBarberia, ETIQUETA);
-		ValidadorAtributos.asegurarLongitud(nombreBarberia, ETIQUETA, LONGITUD_MINIMA, LONGITUD_MAXIMA);
+		ValidadorAtributos.asegurarTexto(nombreBarberia, ETIQUETA, LONGITUD_MINIMA, LONGITUD_MAXIMA);
 	}
 }

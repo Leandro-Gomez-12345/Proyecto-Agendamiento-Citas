@@ -29,8 +29,7 @@ public final class AsegurarDenominacionBarberiaValidaRule implements Rule<String
 	public void ejecutar(final String... datos) {
 		var denominacion = datos[0];
 
-		ValidadorAtributos.asegurarObligatorio(denominacion, ETIQUETA);
-		ValidadorAtributos.asegurarLongitud(denominacion, ETIQUETA, LONGITUD_MINIMA, LONGITUD_MAXIMA);
+		ValidadorAtributos.asegurarTexto(denominacion, ETIQUETA, LONGITUD_MINIMA, LONGITUD_MAXIMA);
 		ValidadorAtributos.asegurarFormato(denominacion, ETIQUETA, CARACTERES_PERMITIDOS,
 				DESCRIPCION_CARACTERES_PERMITIDOS);
 		asegurarQueNoTerminaEnSufijoDeSociedad(denominacion);
