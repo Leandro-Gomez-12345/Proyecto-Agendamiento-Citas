@@ -11,8 +11,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 @Configuration
 public class SeguridadConfiguracion {
 
-	@Bean 
-	SecurityFilterChain filtrosDeSeguridad(HttpSecurity http) throws Exception {
+	@Bean
+	SecurityFilterChain filtrosDeSeguridad(HttpSecurity http) {
 		http
 			.authorizeHttpRequests(reglas -> reglas.anyRequest().authenticated())
 			.oauth2Login(Customizer.withDefaults())
