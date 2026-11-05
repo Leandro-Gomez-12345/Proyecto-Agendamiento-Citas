@@ -41,12 +41,6 @@
 								<div class="form-text">Entre 2 y 117 caracteres. Es el nombre registrado en la cámara de comercio, sin el sufijo del tipo de sociedad (S.A.S., SAS, Ltda., Limitada, S.A., SA).</div>
 							</div>
 
-							<div class="mb-3">
-								<label for="razonSocial" class="form-label">Razón social</label>
-								<input type="text" id="razonSocial" class="form-control" readonly tabindex="-1">
-								<div class="form-text">El sistema la forma sola: la denominación seguida del sufijo del tipo de sociedad.</div>
-							</div>
-
 							<div class="mb-4">
 								<label for="nit" class="form-label">NIT</label>
 								<input type="text" id="nit" class="form-control" maxlength="12" placeholder="Ejemplo: 900123456-7" autocomplete="off">
@@ -203,7 +197,6 @@
 		const campoNombreBarberia = document.getElementById("nombreBarberia");
 		const campoTipoSociedad = document.getElementById("tipoSociedad");
 		const campoDenominacion = document.getElementById("denominacion");
-		const campoRazonSocial = document.getElementById("razonSocial");
 		const campoNit = document.getElementById("nit");
 		const botonRegistrar = document.getElementById("botonRegistrar");
 		const indicadorCarga = document.getElementById("indicadorCarga");
@@ -233,12 +226,6 @@
 				denominacion: campoDenominacion.value.trim(),
 				nit: campoNit.value.trim(),
 			};
-		}
-
-		function mostrarRazonSocial() {
-			const tipoSociedad = tiposSociedad.find((tipo) => tipo.id === campoTipoSociedad.value);
-			const denominacion = campoDenominacion.value.trim();
-			campoRazonSocial.value = tipoSociedad && denominacion !== "" ? `${denominacion} ${tipoSociedad.sufijo}` : "";
 		}
 
 		function mostrarTiposSociedad() {
@@ -288,7 +275,6 @@
 				const mensajeConfirmacion = await registrarBarberia(obtenerDatosFormulario());
 				mostrarMensaje(mensajeConfirmacion, "success");
 				formulario.reset();
-				mostrarRazonSocial();
 			} catch (error) {
 				mostrarMensaje(error.message, "danger");
 			} finally {
@@ -301,10 +287,6 @@
 		[campoNombreBarberia, campoTipoSociedad, campoDenominacion, campoNit].forEach((campo) => {
 			campo.addEventListener("input", () => campo.classList.remove("is-invalid"));
 		});
-		[campoTipoSociedad, campoDenominacion].forEach((campo) => {
-			campo.addEventListener("input", mostrarRazonSocial);
-		});
-
 		cargarTiposSociedad();
 	</script>
 </body>
