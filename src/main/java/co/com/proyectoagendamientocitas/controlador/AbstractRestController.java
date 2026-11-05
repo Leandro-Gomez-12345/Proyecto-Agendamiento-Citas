@@ -7,43 +7,35 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import co.com.proyectoagendamientocitas.controlador.respuesta.RespuestaError;
+import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasExcepcion;
 import co.com.proyectoagendamientocitas.transversal.logger.AgendamientoCitasLogger;
-import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
 @RestControllerAdvice
 public abstract class AbstractRestController {
-	
+
 	private static final AgendamientoCitasLogger logger = AgendamientoCitasLogger.obtener(AbstractRestController.class);
-	
+
 	@ExceptionHandler(AgendamientoCitasExcepcion.class)
 	public ResponseEntity<RespuestaError<String>> controlarAgendamientoCitasException(AgendamientoCitasExcepcion excepcion) {
-		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta = "Se ha presentado un error tratando de llevar a cabo la operacion deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguele el codigo: "
-				.concat(correlationId);
 		var respuesta = RespuestaError.crear(excepcion.getMensajeUsuario());
-		logger.registrarExcepcion(correlationId, excepcion);
+		logger.registrarExcepcion(respuesta.getCorrelationId(), excepcion);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
 	}
-	
+
 	@ExceptionHandler(NoResourceFoundException.class)
 	public ResponseEntity<RespuestaError<String>> controlarNotReourcerFoundException(NoResourceFoundException excepcion) {
-		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta = "El recurso que se pidió no existe..." + excepcion.getResourcePath()
-		+ " por el metodo " + excepcion.getHttpMethod();
-		var respuesta = RespuestaError.crear(mensajeRespuesta);
-		logger.advertencia("[{}] Recurso {} no existe (método {})", correlationId, excepcion.getResourcePath(),
-				excepcion.getHttpMethod());
+		var respuesta = RespuestaError.crear(CatalogoMensajes.AbstractRestController.RECURSO_NO_EXISTE
+				.formatted(excepcion.getResourcePath(), excepcion.getHttpMethod()));
+		logger.advertencia("[{}] Recurso {} no existe (método {})", respuesta.getCorrelationId(),
+				excepcion.getResourcePath(), excepcion.getHttpMethod());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
 	}
-	
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<RespuestaError<String>> controlarException(Exception excepcion) {
-		var correlationId = UtilUUID.generarComoTexto();
-		var mensajeRespuesta = "Se ha presentado tratando de llevar a cabo la operacion deseada. Por favor intente de nuevo y si el problema persiste contacte al administrador de la aplicacion y entreguelo "
-				.concat(correlationId);
-		var respuesta = RespuestaError.crear(mensajeRespuesta);
-		logger.registrarExcepcion(correlationId, excepcion);
+		var respuesta = RespuestaError.crear(CatalogoMensajes.AbstractRestController.ERROR_NO_CONTROLADO);
+		logger.registrarExcepcion(respuesta.getCorrelationId(), excepcion);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
 	}
 }
