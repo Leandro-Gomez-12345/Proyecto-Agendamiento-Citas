@@ -1,4 +1,4 @@
-package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun;
+package co.com.proyectoagendamientocitas.negocio.negocio.reglas;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 

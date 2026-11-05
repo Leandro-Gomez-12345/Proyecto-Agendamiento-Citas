@@ -7,7 +7,7 @@ import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCita
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilTexto;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
-public final class ValidadorAtributos {
+public class ValidadorAtributos {
 
 	private ValidadorAtributos() {
 

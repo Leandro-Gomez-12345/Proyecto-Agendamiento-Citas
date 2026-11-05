@@ -11,7 +11,7 @@ public class TipoSociedadNegocioImpl implements TipoSociedadNegocio {
 
 	private final DAOFactory daoFactory;
 
-	public TipoSociedadNegocioImpl(final DAOFactory daoFactory) {
+	public TipoSociedadNegocioImpl(DAOFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 

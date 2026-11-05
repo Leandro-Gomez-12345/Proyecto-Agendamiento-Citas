@@ -266,7 +266,8 @@ public final class CatalogoMensajes {
 		public static final String ASEGURAR_EXISTE_BARBERO_SERVICIO_CON_ID = "No existe el servicio del barbero con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_BLOQUEO_CON_ID = "No existe el bloqueo con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_CITA_CON_ID = "No existe la cita con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
-		public static final String ASEGURAR_EXISTE_CLIENTE_CON_ID = "No existe el cliente con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
+		public static final String ASEGURAR_EXISTE_CIUDAD_CON_ID = "No existe la ciudad con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
+		public static final String ASEGURAR_EXISTE_CLIENTE_CON_ID ="No existe el cliente con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_ESTADO_CON_ID = "No existe el estado con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_FECHA_FESTIVO_CON_ID = "No existe la apertura de un festivo con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
 		public static final String ASEGURAR_EXISTE_FESTIVO_CON_ID = "No existe el festivo con el identificador enviado y por lo tanto no es posible llevar a cabo la operación.";
@@ -309,4 +310,12 @@ public final class CatalogoMensajes {
 		public static final String ASEGURAR_TIEMPO_ESPERA_CITA_YA_PASO = "Todavía no ha pasado la hora de inicio de la cita más su tiempo de espera.";
 	}
 	
+	public static final class AbstractRestController {
+		
+		private AbstractRestController() {
+			
+		}
+		
+		public static final String ERROR = "";
+	}
 }

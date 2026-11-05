@@ -2,12 +2,12 @@ package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.entidad.BarberiaEntidad;
-import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun.ReglaConDAO;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.ReglaConDAO;
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasNegocioExcepcion;
 import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilUUID;
 
-public final class AsegurarTipoSociedadBarberiaExisteRule implements ReglaConDAO<BarberiaEntidad> {
+public class AsegurarTipoSociedadBarberiaExisteRule implements ReglaConDAO<BarberiaEntidad> {
 
 	private static final ReglaConDAO<BarberiaEntidad> INSTANCIA = new AsegurarTipoSociedadBarberiaExisteRule();
 
@@ -20,7 +20,7 @@ public final class AsegurarTipoSociedadBarberiaExisteRule implements ReglaConDAO
 	}
 
 	@Override
-	public void ejecutar(final BarberiaEntidad barberia, final DAOFactory daoFactory) {
+	public void ejecutar(BarberiaEntidad barberia, DAOFactory daoFactory) {
 		var tipoSociedad = daoFactory.obtenerTipoSociedadDAO().consultarPorId(barberia.getTipoSociedad().getId());
 
 		if (UtilUUID.obtenerUUIDDefecto().equals(tipoSociedad.getId())) {

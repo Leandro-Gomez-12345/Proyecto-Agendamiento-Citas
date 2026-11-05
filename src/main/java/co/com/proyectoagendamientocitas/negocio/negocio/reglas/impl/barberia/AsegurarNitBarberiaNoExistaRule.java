@@ -1,32 +1,31 @@
 package co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
-import co.com.proyectoagendamientocitas.dominio.BarberiaDominio;
 import co.com.proyectoagendamientocitas.entidad.BarberiaEntidad;
-import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.comun.ReglaConDAO;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.ReglaConDAO;
 import co.com.proyectoagendamientocitas.transversal.catalogo.CatalogoMensajes;
 import co.com.proyectoagendamientocitas.transversal.excepciones.AgendamientoCitasNegocioExcepcion;
 
-public final class AsegurarNitBarberiaNoExistaRule implements ReglaConDAO<BarberiaDominio> {
+public class AsegurarNitBarberiaNoExistaRule implements ReglaConDAO<BarberiaEntidad> {
 
-	private static final ReglaConDAO<BarberiaDominio> INSTANCIA = new AsegurarNitBarberiaNoExistaRule();
+	private static final ReglaConDAO<BarberiaEntidad> INSTANCIA = new AsegurarNitBarberiaNoExistaRule();
 
 	private AsegurarNitBarberiaNoExistaRule() {
 
 	}
 
-	public static ReglaConDAO<BarberiaDominio> obtenerInstancia() {
+	public static ReglaConDAO<BarberiaEntidad> obtenerInstancia() {
 		return INSTANCIA;
 	}
 
 	@Override
-	public void ejecutar(final BarberiaDominio barberia, final DAOFactory daoFactory) {
+	public void ejecutar(BarberiaEntidad barberia, DAOFactory daoFactory) {
 		var filtro = new BarberiaEntidad();
 		filtro.setNit(barberia.getNit());
 
 		var coincidencias = daoFactory.obtenerBarberiaDAO().consultarPorFiltro(filtro);
 
-		if (coincidencias.stream().anyMatch(otra -> !otra.getId().equals(barberia.getId()))) {
+		if (!coincidencias.isEmpty()) {
 			var mensajeUsuario = CatalogoMensajes.Reglas.ASEGURAR_NIT_BARBERIA_NO_EXISTA;
 			throw AgendamientoCitasNegocioExcepcion.crear(mensajeUsuario);
 		}

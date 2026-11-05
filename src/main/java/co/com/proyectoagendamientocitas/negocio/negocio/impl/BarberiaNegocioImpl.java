@@ -6,16 +6,17 @@ import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
 import co.com.proyectoagendamientocitas.dominio.BarberiaDominio;
 import co.com.proyectoagendamientocitas.negocio.negocio.BarberiaNegocio;
 import co.com.proyectoagendamientocitas.negocio.negocio.assembler.impl.BarberiaEntidadAssembler;
+import co.com.proyectoagendamientocitas.entidad.BarberiaEntidad;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarDenominacionBarberiaNoExistaRule;
+import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarFormatoBarberiaValidoRule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarIdBarberiaUnicoRule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarNitBarberiaNoExistaRule;
 import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.AsegurarTipoSociedadBarberiaExisteRule;
-import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.FormarRazonSocialBarberiaRule;
-import co.com.proyectoagendamientocitas.negocio.negocio.reglas.impl.barberia.ValidarDatosRegistrarBarberiaRule;
 
 public class BarberiaNegocioImpl implements BarberiaNegocio {
 
 	private static final String OPERACION_NO_IMPLEMENTADA = "Operación pendiente de implementar";
+	private static final String SEPARADOR_RAZON_SOCIAL = " ";
 
 	private final DAOFactory daoFactory;
 
@@ -24,19 +25,24 @@ public class BarberiaNegocioImpl implements BarberiaNegocio {
 	}
 
 	@Override
-	public BarberiaDominio registrarBarberia(final BarberiaDominio datos) {
-		ValidarDatosRegistrarBarberiaRule.obtenerInstancia().ejecutar(datos);
-
+	public BarberiaDominio registrarBarberia(BarberiaDominio datos) {
 		var barberiaEntidad = BarberiaEntidadAssembler.getInstance().convertirAEntidad(datos);
-		AsegurarTipoSociedadBarberiaExisteRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
-		AsegurarDenominacionBarberiaNoExistaRule.obtenerInstancia().ejecutar(datos, daoFactory);
-		AsegurarNitBarberiaNoExistaRule.obtenerInstancia().ejecutar(datos, daoFactory);
 
-		FormarRazonSocialBarberiaRule.obtenerInstancia().ejecutar(barberiaEntidad);
+		AsegurarFormatoBarberiaValidoRule.obtenerInstancia().ejecutar(barberiaEntidad);
+		AsegurarTipoSociedadBarberiaExisteRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
+		AsegurarDenominacionBarberiaNoExistaRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
+		AsegurarNitBarberiaNoExistaRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
+
+		formarRazonSocial(barberiaEntidad);
 		AsegurarIdBarberiaUnicoRule.obtenerInstancia().ejecutar(barberiaEntidad, daoFactory);
 
 		daoFactory.obtenerBarberiaDAO().crear(barberiaEntidad);
 		return BarberiaEntidadAssembler.getInstance().convertirADominio(barberiaEntidad);
+	}
+
+	private static void formarRazonSocial(final BarberiaEntidad barberia) {
+		barberia.setRazonSocial(
+				barberia.getDenominacion() + SEPARADOR_RAZON_SOCIAL + barberia.getTipoSociedad().getSufijo());
 	}
 
 	@Override

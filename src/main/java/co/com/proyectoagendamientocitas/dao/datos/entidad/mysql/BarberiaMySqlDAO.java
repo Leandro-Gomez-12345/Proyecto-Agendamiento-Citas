@@ -16,10 +16,11 @@ import co.com.proyectoagendamientocitas.transversal.utilitarios.UtilObjeto;
 public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 
 	private static final String SQL_CREAR =
-			"INSERT INTO barberia (id, tipoSociedad, nombreBarberia, denominacion, razonSocial, nit) VALUES (?, ?, ?, ?, ?, ?)";
-	private static final String SQL_CONSULTAR = "SELECT id, tipoSociedad, nombreBarberia, denominacion, razonSocial, nit FROM barberia";
+			"INSERT INTO barberia (id, tipoSociedad, nombreBarberia, denominacion, nit) VALUES (?, ?, ?, ?, ?)";
+	private static final String SQL_CONSULTAR =
+			"SELECT id, tipoSociedad, nombreBarberia, denominacion, razonSocial, nit FROM vistaBarberia";
 	private static final String SQL_ACTUALIZAR =
-			"UPDATE barberia SET tipoSociedad = ?, nombreBarberia = ?, denominacion = ?, razonSocial = ?, nit = ? WHERE id = ?";
+			"UPDATE barberia SET tipoSociedad = ?, nombreBarberia = ?, denominacion = ?, nit = ? WHERE id = ?";
 	private static final String SQL_ELIMINAR = "DELETE FROM barberia WHERE id = ?";
 
 	public BarberiaMySqlDAO(final Connection conexion) {
@@ -30,7 +31,7 @@ public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 	public void crear(final BarberiaEntidad entidad) {
 		ejecutarActualizacion(SQL_CREAR, CatalogoMensajes.Datos.USUARIO_ERROR_CREANDO_BARBERIA,
 				entidad.getId().toString(), entidad.getTipoSociedad().getId().toString(), entidad.getNombreBarberia(),
-				entidad.getDenominacion(), entidad.getRazonSocial(), entidad.getNit());
+				entidad.getDenominacion(), entidad.getNit());
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class BarberiaMySqlDAO extends SqlDAO implements BarberiaDAO {
 	public void actualizar(final UUID id, final BarberiaEntidad entidad) {
 		ejecutarActualizacion(SQL_ACTUALIZAR, CatalogoMensajes.Datos.USUARIO_ERROR_ACTUALIZANDO_BARBERIA,
 				entidad.getTipoSociedad().getId().toString(), entidad.getNombreBarberia(), entidad.getDenominacion(),
-				entidad.getRazonSocial(), entidad.getNit(), id.toString());
+				entidad.getNit(), id.toString());
 	}
 
 	@Override
