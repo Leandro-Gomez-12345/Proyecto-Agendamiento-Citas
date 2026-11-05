@@ -1,5 +1,6 @@
 package co.com.proyectoagendamientocitas.negocio.negocio.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
@@ -43,6 +44,14 @@ public class BarberiaNegocioImpl implements BarberiaNegocio {
 	private static void formarRazonSocial(final BarberiaEntidad barberia) {
 		barberia.setRazonSocial(
 				barberia.getDenominacion() + SEPARADOR_RAZON_SOCIAL + barberia.getTipoSociedad().getSufijo());
+	}
+
+	@Override
+	public List<BarberiaDominio> consultarBarberias() {
+		return daoFactory.obtenerBarberiaDAO().consultarTodos().stream()
+				.map(barberia -> new BarberiaDominio.Builder().id(barberia.getId())
+						.nombreBarberia(barberia.getNombreBarberia()).build())
+				.toList();
 	}
 
 	@Override

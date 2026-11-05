@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Registrar sede</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="bg-body-tertiary">
+	<main class="container py-5">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-8 col-lg-6">
+				<div class="card shadow-sm">
+					<div class="card-body p-4">
+						<h1 class="h4 mb-4">Registrar sede</h1>
+
+						<div id="areaMensaje" class="alert d-none" role="alert"></div>
+
+						<form id="formularioSede" novalidate>
+							<div class="mb-3">
+								<label for="barberia" class="form-label">Barbería</label>
+								<select id="barberia" class="form-select" disabled>
+									<option value="">Cargando barberías...</option>
+								</select>
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Es la barbería a la que pertenece la sede.</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="ciudad" class="form-label">Ciudad</label>
+								<select id="ciudad" class="form-select" disabled>
+									<option value="">Cargando ciudades...</option>
+								</select>
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Es la ciudad en la que queda ubicada la sede.</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="nombre" class="form-label">Nombre de la sede</label>
+								<input type="text" id="nombre" class="form-control" maxlength="50" placeholder="Ejemplo: Sede Poblado" autocomplete="off">
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Entre 2 y 50 caracteres. No puede repetirse dentro de la misma barbería.</div>
+							</div>
+
+							<div class="mb-4">
+								<label for="direccion" class="form-label">Dirección</label>
+								<input type="text" id="direccion" class="form-control" maxlength="100" placeholder="Ejemplo: Carrera 43A # 10-25" autocomplete="off">
+								<div class="invalid-feedback"></div>
+								<div class="form-text">Entre 5 y 100 caracteres. Solo letras, números, espacios y los signos # y -.</div>
+							</div>
+
+							<button type="submit" id="botonRegistrar" class="btn btn-primary">
+								<span id="indicadorCarga" class="spinner-border spinner-border-sm d-none" aria-hidden="true"></span>
+								Registrar sede
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script>
+
+		const URL_SEDES = "/api/v1/sedes";
+		const URL_BARBERIAS = "/api/v1/barberias";
+		const URL_CIUDADES = "/api/v1/ciudades";
+
+		const MENSAJE_SIN_CONEXION = "No fue posible comunicarse con el servidor. Verifique que la aplicación esté en ejecución e intente de nuevo.";
+		const MENSAJE_ERROR_GENERICO = "Se presentó un problema tratando de registrar la sede. Intente de nuevo.";
+		const MENSAJE_ERROR_BARBERIAS = "Se presentó un problema tratando de consultar las barberías. Recargue la página e intente de nuevo.";
+		const MENSAJE_ERROR_CIUDADES ="Se presentó un problema tratando de consultar las ciudades. Recargue la página e intente de nuevo.";
+		const MENSAJE_REGISTRO_EXITOSO = "La sede se registró correctamente.";
+		const MENSAJE_SESION_EXPIRADA = "Su sesión expiró. Recargue la página e inicie sesión de nuevo.";
+		const MENSAJE_SOLICITUD_NO_VALIDADA = "No fue posible validar la solicitud. Recargue la página e intente de nuevo.";
+
+		const COOKIE_TOKEN_CSRF = "XSRF-TOKEN";
+		const ENCABEZADO_TOKEN_CSRF = "X-XSRF-TOKEN";
+
+		function leerCookie(nombre) {
+			const fila = document.cookie.split("; ").find((cookie) => cookie.startsWith(`${nombre}=`));
+			return fila ? decodeURIComponent(fila.slice(nombre.length + 1)) : "";
+		}
+
+		async function llamarApi(url, opciones = {}) {
+			const encabezados = { ...opciones.headers };
+			if ((opciones.method ?? "GET") !== "GET") {
+				encabezados[ENCABEZADO_TOKEN_CSRF] = leerCookie(COOKIE_TOKEN_CSRF);
+			}
+
+			let respuesta;
+			try {
+				respuesta = await fetch(url, { ...opciones, headers: encabezados, redirect: "manual" });
+			} catch {
+				throw new Error(MENSAJE_SIN_CONEXION);
+			}
+
+			if (respuesta.type === "opaqueredirect" || respuesta.status === 401) {
+				throw new Error(MENSAJE_SESION_EXPIRADA);
+			}
+			if (respuesta.status === 403) {
+				throw new Error(MENSAJE_SOLICITUD_NO_VALIDADA);
+			}
+			return respuesta;
+		}
+
+		async function consultarBarberias() {
+			const respuesta = await llamarApi(URL_BARBERIAS);
+
+			const cuerpo = await leerCuerpoJson(respuesta);
+
+			if (!respuesta.ok) {
+				throw new Error(cuerpo?.mensajes?.[0] ?? MENSAJE_ERROR_BARBERIAS);
+			}
+			return cuerpo?.datos ?? [];
+		}
+
+		async function consultarCiudades() {
+			const respuesta = await llamarApi(URL_CIUDADES);
+
+			const cuerpo = await leerCuerpoJson(respuesta);
+
+			if (!respuesta.ok) {
+				throw new Error(cuerpo?.mensajes?.[0] ?? MENSAJE_ERROR_CIUDADES);
+			}
+			return cuerpo?.datos ?? [];
+		}
+
+		async function registrarSede(datos) {
+			const respuesta = await llamarApi(URL_SEDES, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(datos),
+			});
+
+			const cuerpo = await leerCuerpoJson(respuesta);
+
+			if (!respuesta.ok) {
+				throw new Error(cuerpo?.mensajes?.[0] ?? MENSAJE_ERROR_GENERICO);
+			}
+			return cuerpo?.datos?.[0] ?? MENSAJE_REGISTRO_EXITOSO;
+		}
+
+		async function leerCuerpoJson(respuesta) {
+			try {
+				return await respuesta.json();
+			} catch {
+				return null;
+			}
+		}
+
+		// ---------- Validaciones del formulario ----------
+
+		const CARACTERES_DIRECCION = /^[\p{L}0-9 #-]+$/u;
+
+		function validarBarberia(valor) {
+			if (valor === "") {
+				return "La barbería es obligatoria.";
+			}
+			return "";
+		}
+
+		function validarCiudad(valor) {
+			if (valor === "") {
+				return "La ciudad es obligatoria.";
+			}
+			return "";
+		}
+
+		function validarNombre(valor) {
+			const nombre = valor.trim();
+			if (nombre === "") {
+				return "El nombre de la sede es obligatorio.";
+			}
+			if (nombre.length < 2 || nombre.length > 50) {
+				return "El nombre de la sede debe tener entre 2 y 50 caracteres.";
+			}
+			return "";
+		}
+
+		function validarDireccion(valor) {
+			const direccion = valor.trim();
+			if (direccion === "") {
+				return "La dirección es obligatoria.";
+			}
+			if (direccion.length < 5 || direccion.length > 100) {
+				return "La dirección debe tener entre 5 y 100 caracteres.";
+			}
+			if (!CARACTERES_DIRECCION.test(direccion)) {
+				return "La dirección solo admite letras (con o sin tilde), números, espacios y los signos # y -.";
+			}
+			return "";
+		}
+
+		// ---------- Pantalla ----------
+
+		const formulario = document.getElementById("formularioSede");
+		const campoBarberia = document.getElementById("barberia");
+		const campoCiudad = document.getElementById("ciudad");
+		const campoNombre = document.getElementById("nombre");
+		const campoDireccion = document.getElementById("direccion");
+		const botonRegistrar = document.getElementById("botonRegistrar");
+		const indicadorCarga = document.getElementById("indicadorCarga");
+		const areaMensaje = document.getElementById("areaMensaje");
+
+		let barberias = [];
+		let ciudades = [];
+
+		function marcarCampo(campo, mensajeError) {
+			const esValido = mensajeError === "";
+			campo.classList.toggle("is-invalid", !esValido);
+			campo.parentElement.querySelector(".invalid-feedback").textContent = mensajeError;
+			return esValido;
+		}
+
+		function validarFormulario() {
+			const barberiaEsValida = marcarCampo(campoBarberia, validarBarberia(campoBarberia.value));
+			const ciudadEsValida = marcarCampo(campoCiudad, validarCiudad(campoCiudad.value));
+			const nombreEsValido = marcarCampo(campoNombre, validarNombre(campoNombre.value));
+			const direccionEsValida = marcarCampo(campoDireccion, validarDireccion(campoDireccion.value));
+			return barberiaEsValida && ciudadEsValida && nombreEsValido && direccionEsValida;
+		}
+
+		function obtenerDatosFormulario() {
+			return {
+				barberia: { id: campoBarberia.value },
+				ciudad: { id: campoCiudad.value },
+				nombre: campoNombre.value.trim(),
+				direccion: campoDireccion.value.trim(),
+			};
+		}
+
+		function mostrarBarberias() {
+			campoBarberia.replaceChildren(new Option("Seleccione una barbería", ""));
+			barberias
+				.map((barberia) => new Option(barberia.nombreBarberia, barberia.id))
+				.sort((primera, segunda) => primera.text.localeCompare(segunda.text, "es"))
+				.forEach((opcion) => campoBarberia.add(opcion));
+			campoBarberia.disabled = false;
+		}
+
+		async function cargarBarberias() {
+			try {
+				barberias = await consultarBarberias();
+				mostrarBarberias();
+			} catch (error) {
+				campoBarberia.replaceChildren(new Option("No fue posible cargar las barberías", ""));
+				mostrarMensaje(error.message, "danger");
+			}
+		}
+
+		function obtenerTextoCiudad(ciudad) {
+			return `${ciudad.nombre} - ${ciudad.departamento.nombre}`;
+		}
+
+		function mostrarCiudades() {
+			campoCiudad.replaceChildren(new Option("Seleccione una ciudad", ""));
+			ciudades
+				.map((ciudad) => new Option(obtenerTextoCiudad(ciudad), ciudad.id))
+				.sort((primera, segunda) => primera.text.localeCompare(segunda.text, "es"))
+				.forEach((opcion) => campoCiudad.add(opcion));
+			campoCiudad.disabled = false;
+		}
+
+		async function cargarCiudades() {
+			try {
+				ciudades = await consultarCiudades();
+				mostrarCiudades();
+			} catch (error) {
+				campoCiudad.replaceChildren(new Option("No fue posible cargar las ciudades", ""));
+				mostrarMensaje(error.message, "danger");
+			}
+		}
+
+		function mostrarMensaje(texto, tipo) {
+			areaMensaje.textContent = texto;
+			areaMensaje.className = `alert alert-${tipo}`;
+		}
+
+		function ocultarMensaje() {
+			areaMensaje.textContent = "";
+			areaMensaje.className = "alert d-none";
+		}
+
+		function indicarEnvioEnCurso(enCurso) {
+			botonRegistrar.disabled = enCurso;
+			indicadorCarga.classList.toggle("d-none", !enCurso);
+		}
+
+		function limpiarFormularioConservandoBarberia() {
+			const barberia = campoBarberia.value;
+			formulario.reset();
+			campoBarberia.value = barberia;
+		}
+
+		async function manejarEnvio(evento) {
+			evento.preventDefault();
+			ocultarMensaje();
+
+			if (!validarFormulario()) {
+				formulario.querySelector(".is-invalid").focus();
+				return;
+			}
+
+			indicarEnvioEnCurso(true);
+			try {
+				const mensajeConfirmacion = await registrarSede(obtenerDatosFormulario());
+				mostrarMensaje(mensajeConfirmacion, "success");
+				limpiarFormularioConservandoBarberia();
+			} catch (error) {
+				mostrarMensaje(error.message, "danger");
+			} finally {
+				indicarEnvioEnCurso(false);
+			}
+		}
+
+		formulario.addEventListener("submit", manejarEnvio);
+
+		[campoBarberia, campoCiudad, campoNombre, campoDireccion].forEach((campo) => {
+			campo.addEventListener("input", () => campo.classList.remove("is-invalid"));
+		});
+		cargarBarberias();
+		cargarCiudades();
+	</script>
+</body>
+</html>

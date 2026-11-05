@@ -1,5 +1,6 @@
 package co.com.proyectoagendamientocitas.negocio.fachada.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.dao.factoria.DAOFactory;
@@ -16,7 +17,7 @@ import co.com.proyectoagendamientocitas.transversal.logger.AgendamientoCitasLogg
 public class BarberiaFachadaImpl implements BarberiaFachada {
 	
 	private static final AgendamientoCitasLogger logger = AgendamientoCitasLogger.obtener(BarberiaFachadaImpl.class);
-	private static final String OPERACION_NO_IMPLEMENTADA = "Operación pendiente de implementar";
+	private static final String OPERACION_NO_IMPLEMENTADA = "Operación no implemetada";
 	
 	private DAOFactory daoFactory;
 	private BarberiaNegocio barberiaNegocio;
@@ -51,6 +52,21 @@ public class BarberiaFachadaImpl implements BarberiaFachada {
 
 			var mensajeUsuario = CatalogoMensajes.BarberiaImpl.USUARIO_ERROR_REGISTRANDO_BARBERIA;
 			throw AgendamientoCitasFachadaExcepcion.crear(mensajeUsuario, excepcion.getMessage(), excepcion);
+		}
+	}
+
+	@Override
+	public List<BarberiaDTO> consultarBarberias() {
+		try {
+			var barberias = barberiaNegocio.consultarBarberias();
+			return BarberiaDTOAssembler.getInstance().convertirADTO(barberias);
+		} catch (AgendamientoCitasExcepcion excepcion) {
+			throw excepcion;
+		} catch (Exception excepcion) {
+			var mensajeUsuario = CatalogoMensajes.BarberiaImpl.USUARIO_ERROR_CONSULTANDO_BARBERIAS;
+			throw AgendamientoCitasFachadaExcepcion.crear(mensajeUsuario, excepcion.getMessage(), excepcion);
+		} finally {
+			daoFactory.cerrarConexion();
 		}
 	}
 

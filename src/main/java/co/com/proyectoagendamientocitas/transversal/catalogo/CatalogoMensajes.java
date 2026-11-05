@@ -40,8 +40,27 @@ public final class CatalogoMensajes {
 
 		}
 
-		public static final String USUARIO_ERROR_REGISTRANDO_BARBERIA = UtilTexto.concatenar("Se presentó un problema tratando de registrar la barbería.", CONTACTAR_ADMINISTRADOR);
+		public static final String USUARIO_ERROR_CONSULTANDO_BARBERIAS = UtilTexto.concatenar("Se presentó un problema tratando de consultar las barberías.", CONTACTAR_ADMINISTRADOR);
+		public static final String USUARIO_ERROR_REGISTRANDO_BARBERIA =UtilTexto.concatenar("Se presentó un problema tratando de registrar la barbería.", CONTACTAR_ADMINISTRADOR);
 		
+	}
+
+	public static final class CiudadImpl {
+
+		private CiudadImpl() {
+
+		}
+
+		public static final String USUARIO_ERROR_CONSULTANDO_CIUDADES = UtilTexto.concatenar("Se presentó un problema tratando de consultar las ciudades.", CONTACTAR_ADMINISTRADOR);
+	}
+
+	public static final class SedeImpl {
+
+		private SedeImpl() {
+
+		}
+
+		public static final String USUARIO_ERROR_REGISTRANDO_SEDE = UtilTexto.concatenar("Se presentó un problema tratando de registrar la sede.", CONTACTAR_ADMINISTRADOR);
 	}
 
 	public static final class TipoSociedadImpl {

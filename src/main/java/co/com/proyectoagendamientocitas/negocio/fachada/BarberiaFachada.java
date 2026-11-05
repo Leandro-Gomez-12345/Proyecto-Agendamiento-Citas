@@ -1,5 +1,6 @@
 package co.com.proyectoagendamientocitas.negocio.fachada;
 
+import java.util.List;
 import java.util.UUID;
 
 import co.com.proyectoagendamientocitas.dto.BarberiaDTO;
@@ -7,6 +8,8 @@ import co.com.proyectoagendamientocitas.dto.BarberiaDTO;
 public interface BarberiaFachada {
 
 	BarberiaDTO registrarBarberia(BarberiaDTO datos);
+
+	List<BarberiaDTO> consultarBarberias();
 
 	String consultarNombreBarberia(UUID id);
 
