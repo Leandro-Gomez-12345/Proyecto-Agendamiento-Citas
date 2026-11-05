@@ -66,7 +66,6 @@
 	</main>
 
 	<script>
-		// ---------- Llamadas al backend ----------
 
 		const URL_BARBERIAS = "/api/v1/barberias";
 		const URL_TIPOS_SOCIEDAD = "/api/v1/tipos-sociedad";
@@ -75,20 +74,44 @@
 		const MENSAJE_ERROR_GENERICO = "Se presentó un problema tratando de registrar la barbería. Intente de nuevo.";
 		const MENSAJE_ERROR_TIPOS_SOCIEDAD = "Se presentó un problema tratando de consultar los tipos de sociedad. Recargue la página e intente de nuevo.";
 		const MENSAJE_REGISTRO_EXITOSO = "La barbería se registró correctamente.";
+		const MENSAJE_SESION_EXPIRADA = "Su sesión expiró. Recargue la página e inicie sesión de nuevo.";
+		const MENSAJE_SOLICITUD_NO_VALIDADA = "No fue posible validar la solicitud. Recargue la página e intente de nuevo.";
 
-		/**
-		 * Consulta los tipos de sociedad disponibles (GET /api/v1/tipos-sociedad).
-		 *
-		 * @returns {Promise<Array<{id: string, nombre: string, sufijo: string}>>}
-		 * @throws {Error} con un mensaje listo para mostrarle al usuario si no se logra la consulta.
-		 */
-		async function consultarTiposSociedad() {
+		const COOKIE_TOKEN_CSRF = "XSRF-TOKEN";
+		const ENCABEZADO_TOKEN_CSRF = "X-XSRF-TOKEN";
+
+		
+		function leerCookie(nombre) {
+			const fila = document.cookie.split("; ").find((cookie) => cookie.startsWith(`${nombre}=`));
+			return fila ? decodeURIComponent(fila.slice(nombre.length + 1)) : "";
+		}
+
+		
+		async function llamarApi(url, opciones = {}) {
+			const encabezados = { ...opciones.headers };
+			if ((opciones.method ?? "GET") !== "GET") {
+				encabezados[ENCABEZADO_TOKEN_CSRF] = leerCookie(COOKIE_TOKEN_CSRF);
+			}
+
 			let respuesta;
 			try {
-				respuesta = await fetch(URL_TIPOS_SOCIEDAD);
+				respuesta = await fetch(url, { ...opciones, headers: encabezados, redirect: "manual" });
 			} catch {
 				throw new Error(MENSAJE_SIN_CONEXION);
 			}
+
+			if (respuesta.type === "opaqueredirect" || respuesta.status === 401) {
+				throw new Error(MENSAJE_SESION_EXPIRADA);
+			}
+			if (respuesta.status === 403) {
+				throw new Error(MENSAJE_SOLICITUD_NO_VALIDADA);
+			}
+			return respuesta;
+		}
+
+		
+		async function consultarTiposSociedad() {
+			const respuesta = await llamarApi(URL_TIPOS_SOCIEDAD);
 
 			const cuerpo = await leerCuerpoJson(respuesta);
 
@@ -98,25 +121,13 @@
 			return cuerpo?.datos ?? [];
 		}
 
-		/**
-		 * Envía los datos de la nueva barbería al backend (POST /api/v1/barberias).
-		 *
-		 * @param {{nombreBarberia: string, tipoSociedad: {id: string}, denominacion: string, nit: string}} datos
-		 * @returns {Promise<string>} el mensaje de confirmación que devuelve el backend.
-		 * @throws {Error} con un mensaje listo para mostrarle al usuario si el backend rechaza
-		 *                 la operación o no se logra la comunicación.
-		 */
+		
 		async function registrarBarberia(datos) {
-			let respuesta;
-			try {
-				respuesta = await fetch(URL_BARBERIAS, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(datos),
-				});
-			} catch {
-				throw new Error(MENSAJE_SIN_CONEXION);
-			}
+			const respuesta = await llamarApi(URL_BARBERIAS, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(datos),
+			});
 
 			const cuerpo = await leerCuerpoJson(respuesta);
 
