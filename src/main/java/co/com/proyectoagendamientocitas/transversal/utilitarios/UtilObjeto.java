@@ -1,5 +1,7 @@
 package co.com.proyectoagendamientocitas.transversal.utilitarios;
 
+import java.util.Objects;
+
 public final class UtilObjeto {
 	
 	private UtilObjeto() {
@@ -11,6 +13,6 @@ public final class UtilObjeto {
 	}
 	
 	public static <O> O obtenerValorDefectoSiValorOriginalEsNulo(O valor, O valorDefecto) {
-		return esNulo(valor) ? valorDefecto:valor;
+		return Objects.requireNonNullElse(valor, valorDefecto);
 	}
 }
