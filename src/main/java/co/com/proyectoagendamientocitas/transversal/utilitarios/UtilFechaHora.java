@@ -23,7 +23,7 @@ public final class UtilFechaHora {
 	}
 
 	public static boolean esValorDefecto(final LocalDateTime fechaHora) {
-		return FECHA_HORA_DEFECTO.isEqual(obtenerValorDefecto(fechaHora));
+		return FECHA_HORA_DEFECTO.equals(obtenerValorDefecto(fechaHora));
 	}
 
 	public static LocalDateTime obtenerFechaHoraActual() {

@@ -21,7 +21,7 @@ public final class UtilFecha {
 	}
 
 	public static boolean esValorDefecto(LocalDate fecha) {
-		return FECHA_DEFECTO.isEqual(obtenerValorDefecto(fecha));
+		return FECHA_DEFECTO.equals(obtenerValorDefecto(fecha));
 	}
 
 	public static LocalDate obtenerFechaActual() {
